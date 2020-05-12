@@ -38,6 +38,7 @@ public class ReservationController {
 		reservationService.acceptReservation(id);
 	}
 	
+	// delete
 	@DeleteMapping("/cancel/{id}")
 	public void cancelReservation(@PathVariable long id)throws Exception{
 		reservationService.cancelReservation(id);
