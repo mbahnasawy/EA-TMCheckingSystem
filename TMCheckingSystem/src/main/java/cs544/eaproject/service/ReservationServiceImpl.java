@@ -1,5 +1,8 @@
 package cs544.eaproject.service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -7,11 +10,17 @@ import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import cs544.eaproject.dao.AppointmentDAO;
+import cs544.eaproject.dao.UserDAO;
 import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.domain.Reservation;
 import cs544.eaproject.domain.ReservationStatus;
+import cs544.eaproject.domain.User;
+import cs544.eaproject.repository.AppointmentRepository;
 import cs544.eaproject.repository.ReservationRepository;
 import cs544.eaproject.service.dto.ReservationDto;
 
@@ -21,20 +30,35 @@ public class ReservationServiceImpl implements ReservationService{
 
 	@Autowired
 	private ReservationRepository reservationRepository;
+	
+	@Autowired
+	private  UserDAO userDao ; 
+	
+	@Autowired
+	private  AppointmentRepository appointmentDao ; 
+	
 //	@Autowired
 //	private AppointmentRepository appointmentRepository;
 	@Autowired
 	private ModelMapper modelMapper;
 	@Override
-	public ReservationDto createReservation(long userId, long appointmentId) {
+	public ReservationDto createReservation(long appointmentId) {
 		// TODO Auto-generated method stub
 		//Reservation reservation = reservationMapper.mapToReservation(reservationdto);
 		//reservation = reservationRepository.save(reservation);
 		//Reservation reservation = new Reservation(dateTime, consumer)
 		//return reservationMapper.maptoReservationDto(reservation);
 		//Appointment appointment = appointmentRepository.getOne(appointmentId);
-		Reservation reservation = new Reservation();
-		return null;
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		User current_user = userDao.findByEmail(auth.getName());
+
+		Reservation reservation = new Reservation(current_user, appointmentDao.findById(appointmentId).get());
+				
+		reservationRepository.save(reservation);		
+		
+		return convertEntityToResponse(reservation);
 	}
 
 	@Override
