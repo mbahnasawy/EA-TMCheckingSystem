@@ -4,13 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import cs544.eaproject.dao.ReservationDAO;
 import cs544.eaproject.domain.Reservation;
 import cs544.eaproject.service.dto.ReservationDto;
 
-@Transactional
 @Service
 public class ReservationServiceImpl implements ReservationService{
 
