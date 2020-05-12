@@ -41,7 +41,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	}
 	
 	public void delete(long id) {
-		appointmentDao.deleteById(id);
+		appointmentRepository.deleteById(id);
 	}
 
 }
