@@ -12,16 +12,18 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import cs544.eaproject.domain.Appointment;
+import cs544.eaproject.domain.Reservation;
 
 @Transactional
-@Repository("appointmentDAO")
-public class AppointmentDAOImpl extends BaseDAOImpl<Appointment> implements AppointmentDAO {
+@Repository
+public class AppointmentDAOImpl extends CommonDAOImpl<Appointment> implements AppointmentDAO {
 
 	@SuppressWarnings("unchecked")
-	public Set<Appointment> getAll() {
+	public List<Appointment> getAll() {
 		Query query = sessionFactory.getCurrentSession().createQuery("SELECT a from Appointment a");
-		return new HashSet<Appointment>(query.list())
+		return new ArrayList<Appointment>(query.list());
 		
 	}
+	
 }
 
