@@ -10,14 +10,15 @@ import cs544.eaproject.dao.CommonDAO;
 import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.repository.AppointmentRepository;
 
-@Transactional
-@Service
-public class AppointmentService {
-	@Autowired
-	private  AppointmentRepository appointmentDao;
-	
-	
-	public void delete(long id) {
-		appointmentDao.deleteById(id);
-	}
+
+public interface AppointmentService {
+
+	public Appointment createAppointment(Appointment appointment);
+
+	public void cancelAppointment(int id);
+
+//	public void updateAppointment(Appointment appointment);
+
+	public Appointment viewAppointment(int id);
+	public void delete(long id);
 }
