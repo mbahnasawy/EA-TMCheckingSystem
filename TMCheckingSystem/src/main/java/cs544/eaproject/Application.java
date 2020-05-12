@@ -12,10 +12,8 @@ import cs544.eaproject.service.ReservationService;
 public class Application {
 
 	public static void main(String[] args) {
-		//SpringApplication.run(Application.class, args);
-		ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-		ReservationService reservationService = context.getBean("reservationService", ReservationService.class);
-		//customerService.addCustomer();
+		SpringApplication.run(Application.class);
+
 	}
 
 }
