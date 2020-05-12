@@ -4,12 +4,16 @@ import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Reservation {
@@ -17,13 +21,17 @@ public class Reservation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	
+	@Enumerated(EnumType.STRING)
 	private ReservationStatus status;
 
 	// person requesting the reservation
-	@Temporal(TemporalType.TIMESTAMP)
+	@FutureOrPresent
 	private Date dateTime;
+	@NotNull
 	@ManyToOne
 	private User consumer;
+	@NotNull
 	@ManyToOne
 	private Appointment appointment;
 

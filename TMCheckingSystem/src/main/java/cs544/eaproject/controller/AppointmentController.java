@@ -1,51 +1,63 @@
-/*
- * package cs544.eaproject.controller;
- * 
- * import java.util.List;
- * 
- * import org.apache.log4j.Logger; import
- * org.springframework.beans.factory.annotation.Autowired; import
- * org.springframework.web.bind.annotation.RequestMapping; import
- * org.springframework.web.bind.annotation.RequestMethod;
- * 
- * import cs544.eaproject.service.AppointmentService; import
- * edu.mum.cs.cs544.attendance.controller.CourseController; import
- * edu.mum.cs.cs544.attendance.entity.Course; import
- * edu.mum.cs.cs544.attendance.service.CourseService; import
- * edu.mum.cs.cs544.attendance.util.Constants; import
- * edu.mum.cs.cs544.attendance.util.TimesheetResponse;
- * 
- * public class AppointmentController {
- * 
- * private logger logger = Logger.getLogger(AppointmentController.class);
- * 
- * @Autowired AppointmentService appointmentService;
- * 
- * @RequestMapping(value= "/", method=RequestMethod.GET) public String
- * redirectRoot() { return " "; }
- * 
- * 
- * public TimesheetResponse getAllCourses() {
- * 
- * TimesheetResponse response = new TimesheetResponse();
- * 
- * try {
- * 
- * List<Course> courses = courseService.getAllCourses();
- * 
- * response.setResult(courses); response.setStatus(Constants.SUCCESS_CODE);
- * response.setMessage(Constants.SUCCESS_MESSAGE);
- * 
- * } catch (Exception ex) {
- * 
- * response.setStatus(Constants.ERROR_CODE);
- * response.setMessage(ex.getMessage()); logger.error(ex.getMessage());
- * 
- * }
- * 
- * return response; }
- * 
- * 
- * 
- * }
- */
+package cs544.eaproject.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import cs544.eaproject.dao.UserDAO;
+import cs544.eaproject.domain.Appointment;
+import cs544.eaproject.domain.User;
+import cs544.eaproject.service.AppointmentService;
+import cs544.eaproject.util.Response;
+import cs544.eaproject.util.ResponseStatus;
+
+@RestController
+@RequestMapping("/appointments")
+public class AppointmentController {
+
+	@Autowired
+	AppointmentService appointmentService;
+	
+	@Autowired
+	UserDAO userDao; 
+
+	@RequestMapping(value = "/create", method = RequestMethod.POST, headers = "Accept=application/json", produces = {
+			"application/json" })
+	@ResponseBody
+	public Response createAppointment(@RequestBody Appointment appointmentDTO) {
+		Response response = new Response();
+
+		try {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	
+			User current_user = userDao.findByEmail(auth.getName());
+
+//			if(!((Role) current_user.getUserRole()).getRoleName().equals("CHECKER")) {
+//				throw new Exception("");
+//			}
+			
+			appointmentDTO.setProvider(current_user);
+			Appointment appointment = appointmentService.createAppointment(appointmentDTO);
+			response.setResult(appointment);
+			response.setMessage(ResponseStatus.SUCCESS_MESSAGE);
+			response.setStatus(ResponseStatus.SUCCESS_CODE);
+
+		} catch (Exception ex) {
+			response.setMessage(ex.getMessage());
+			response.setStatus(ResponseStatus.ERROR_CODE);
+		}
+
+		return response;
+	}
+
+	@GetMapping("/hello")
+	public String hello() {
+		return "hello";
+	}
+}
