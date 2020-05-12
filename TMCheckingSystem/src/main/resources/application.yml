@@ -2,8 +2,8 @@ spring:
   application:
     name: sample-springdata-service
   datasource:
-    url: jdbc:mysql://localhost/tmchecking?serverTimezone=UTC
-    username: Admin
+    url: jdbc:mysql://localhost/tmchecking
+    username: admin
     password: 123
     driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
@@ -11,7 +11,8 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl      ddl-auto: create
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
