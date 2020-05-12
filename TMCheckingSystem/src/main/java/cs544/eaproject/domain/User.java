@@ -37,12 +37,12 @@ public class User {
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Role> roles;
 
-
-	public User(String firstName, String lastName, String gender, @Email String email, Set<Role> roles) {
+	public User(String firstName, String lastName, String gender, @Email String email, Role role,String password) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
 		this.email = email;
+		this.password = password;
 		this.roles.addAll(roles);
 	}
 
@@ -112,5 +112,4 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 }
