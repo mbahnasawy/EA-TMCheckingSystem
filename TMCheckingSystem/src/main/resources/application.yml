@@ -1,19 +1,17 @@
-server:
-  port: 8081
-spring:
+spring:    
   application:
     name: sample-springdata-service
   datasource:
-    url: jdbc:mysql://localhost:3306/tmchecking?serverTimezone=UTC
-    username: cs544
-    password: 201511
+    url: jdbc:mysql://localhost/tmchecking
+    username: Admin
+    password: 123
     driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
