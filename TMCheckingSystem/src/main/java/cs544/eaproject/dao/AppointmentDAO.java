@@ -1,5 +1,5 @@
 package cs544.eaproject.dao;
 
-public class AppointmentDAO {
+public class AppointmentDAO implements CommonDAO extends BaseRepository{
 
 }

@@ -1,5 +1,14 @@
 package cs544.eaproject.service;
 
-public class AppointmentService {
+import java.util.List;
 
-}
+import cs544.eaproject.domain.Appointment;
+
+
+public interface AppointmentService {
+
+public List<Appointment> getAllAppointment();
+
+	}
+
+
