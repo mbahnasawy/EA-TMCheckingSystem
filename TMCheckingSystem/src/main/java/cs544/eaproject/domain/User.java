@@ -21,6 +21,7 @@ public class User {
 	@NotNull
 	private String firstName;
 	private String lastName;
+	private String password;
 	private String gender;
 	@Email
 	@Column(nullable = false)
@@ -30,13 +31,13 @@ public class User {
 	@ManyToMany
 	private Set<Role> roles;
 
-
-	public User(String firstName, String lastName, String gender, @Email String email, Role role) {
+	public User(String firstName, String lastName, String gender, @Email String email, Role role,String password) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
 		this.email = email;
 		this.roles.add(role);
+		this.password = password;
 	}
 
 	public User() {
@@ -89,5 +90,22 @@ public class User {
 	public void addRole(Role role) {
 		roles.add(role);
 	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@Override
+	public String toString() {
+		return "User [getId()=" + getId() + ", getFirstName()=" + getFirstName() + ", getLastName()=" + getLastName()
+				+ ", getGender()=" + getGender() + ", getEmail()=" + getEmail() + ", getUserRole()=" + getUserRole()
+				+ ", getPassword()=" + getPassword() + "]";
+	}
+	
+	
 
 }

@@ -1,3 +1,5 @@
+server:
+  port: 8081
 spring:    
   application:
     name: sample-springdata-service
@@ -11,7 +13,8 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl      ddl-auto: create
-    properties:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl      ddl-auto: update
+    properties:    
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+
