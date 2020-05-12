@@ -7,10 +7,13 @@ import cs544.eaproject.service.dto.ReservationDto;
 
 public interface ReservationService {
 
+	public ReservationDto getReservationbyId(long id)throws Exception  ;
 	
-	public ReservationDto createReservation(Reservation reservation);
-	public boolean acceptReservation(long ReservationId);
-	public boolean cancelReservation(long ReservationId);
+	public ReservationDto createReservation(long userId, long appointmentId);
+	
+	public boolean acceptReservation(long ReservationId)throws Exception;
+	
+	public boolean cancelReservation(long ReservationId)throws Exception;
 	
 	public List<ReservationDto> viewReservations();
 	
