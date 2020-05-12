@@ -1,6 +1,15 @@
 package cs544.eaproject.dao;
 
-public interface CommonDAO {
+public interface CommonDAO<T> {
+	
+	public T add(T t);
 
-	// TODO
+	public T update(T t);
+
+	public boolean delete(int id);
+
+	public T get(int id);
+
+	
 }
+
