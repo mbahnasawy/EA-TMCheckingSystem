@@ -11,12 +11,12 @@ public interface ReservationService {
 	public ReservationDto createReservation(Reservation reservation);
 	public boolean acceptReservation(long ReservationId);
 	public boolean cancelReservation(long ReservationId);
-	
 	public List<ReservationDto> viewReservations();
 	
 	List<ReservationDto> convertEntityListToResponseList(List<Reservation> entityList);
 	
 	ReservationDto convertEntityToResponse(Reservation entity);
+	public ReservationDto getReservationbyId(long id);
 	
 	
 }

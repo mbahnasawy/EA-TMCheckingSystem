@@ -12,7 +12,7 @@ import cs544.eaproject.domain.Appointment;
 
 @Transactional
 @Repository
-public class AppointmentDAOImpl extends CommonDAOImpl<Appointment> implements AppointmentDAO {
+public abstract class AppointmentDAOImpl extends CommonDAOImpl<Appointment> implements AppointmentDAO {
 
 	public List<Appointment> getAll()
 	{
