@@ -1,6 +1,8 @@
 package cs544.eaproject.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -22,11 +24,10 @@ public class Reservation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Enumerated(EnumType.STRING)
+	//@Enumerated(EnumType.STRING)
 	private ReservationStatus status;
 
 	// person requesting the reservation
-	@FutureOrPresent
 	private Date dateTime;
 	@NotNull
 	@ManyToOne
@@ -35,10 +36,11 @@ public class Reservation {
 	@ManyToOne
 	private Appointment appointment;
 
-	public Reservation(Date dateTime, User consumer) {
-		this.dateTime = dateTime;
+	public Reservation(User consumer, Appointment appointment) {
+		this.dateTime = Date.from( LocalDateTime.now().atZone( ZoneId.systemDefault()).toInstant());
 		this.consumer = consumer;
 		this.status = ReservationStatus.PENDING;
+		this.appointment = appointment;
 	}
 
 	public Reservation() {

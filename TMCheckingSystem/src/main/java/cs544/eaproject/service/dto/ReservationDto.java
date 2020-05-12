@@ -19,9 +19,7 @@ public class ReservationDto {
 	
 	private Date dateTime;
 	
-	//private User consumer;
-	
-	//private Appointment appointment;
+	private Appointment appointment;
 
 	public long getId() {
 		return id;

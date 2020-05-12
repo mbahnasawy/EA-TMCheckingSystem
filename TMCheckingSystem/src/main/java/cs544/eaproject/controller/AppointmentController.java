@@ -1,9 +1,11 @@
 package cs544.eaproject.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +21,16 @@ import cs544.eaproject.util.ResponseStatus;
 
 @RestController
 @RequestMapping("/appointments")
+
 public class AppointmentController {
+	
+
+	@RequestMapping(value ="/delete/{appointmentId}", method = RequestMethod.DELETE)
+	public void delete(@PathVariable long appointmentId) throws Exception{
+
+		appointmentService.delete(appointmentId);
+
+	}
 
 	@Autowired
 	AppointmentService appointmentService;

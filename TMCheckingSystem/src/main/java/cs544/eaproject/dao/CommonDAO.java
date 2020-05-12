@@ -1,14 +1,18 @@
 package cs544.eaproject.dao;
 
-public interface CommonDAO<T> {
-	public T add(T t);
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
 
-	public T update(T t);
+import cs544.eaproject.domain.Appointment;
 
-	public boolean delete(int id);
+//@Repository
+//public interface CommonDAO<T> extends JpaRepository<T, Integer>{
+//	
+//}
 
-	public T get(int id);
-
-	
+@Repository
+public interface CommonDAO{
+	void delete(long id);
 }
 

@@ -39,5 +39,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public void delete(long id) {
+		appointmentRepository.deleteById(id);
+	}
 
 }
