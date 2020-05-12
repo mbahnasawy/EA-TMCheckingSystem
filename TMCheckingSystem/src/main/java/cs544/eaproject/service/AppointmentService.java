@@ -8,15 +8,16 @@ import org.springframework.stereotype.Service;
 import cs544.eaproject.dao.AppointmentDAO;
 import cs544.eaproject.dao.CommonDAO;
 import cs544.eaproject.domain.Appointment;
+import cs544.eaproject.repository.AppointmentRepository;
 
 @Transactional
 @Service
 public class AppointmentService {
 	@Autowired
-	private  AppointmentDAO appointmentDao;
+	private  AppointmentRepository appointmentDao;
 	
 	
-	public void cancelAppointment(long id) {
-		appointmentDao.delete(id);
+	public void delete(long id) {
+		appointmentDao.deleteById(id);
 	}
 }

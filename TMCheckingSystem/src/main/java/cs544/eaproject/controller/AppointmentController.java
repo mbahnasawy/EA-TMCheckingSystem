@@ -10,15 +10,13 @@ import cs544.eaproject.service.AppointmentService;
 
 @RestController
 public class AppointmentController {
-	// private Logger logger = Logger.getLogger(AppointmentController.class);
-
 	@Autowired
 	AppointmentService appointmentService;
 
-	@RequestMapping(value = "/appointment/{appointmentId}", method = RequestMethod.DELETE)
-	public void cancel(@PathVariable long appointmentId) {
+	@RequestMapping(value ="/delete/{appointmentId}", method = RequestMethod.DELETE)
+	public void delete(@PathVariable long appointmentId) throws Exception{
 
-		appointmentService.cancelAppointment(appointmentId);
+		appointmentService.delete(appointmentId);
 
 	}
 
