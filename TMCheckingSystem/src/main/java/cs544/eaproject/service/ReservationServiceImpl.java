@@ -12,8 +12,8 @@ import cs544.eaproject.service.dto.ReservationDto;
 @Service
 public class ReservationServiceImpl implements ReservationService{
 
-	@Autowired
-	ReservationDAO reservstionDAO ;
+//	@Autowired
+//	ReservationDAO reservstionDAO ;
 	
 	@Override
 	public ReservationDto createReservation(Reservation reservation) {
@@ -51,11 +51,11 @@ public class ReservationServiceImpl implements ReservationService{
 		return null;
 	}
 	
-	public ReservationDAO getReservstionDAO() {
-		return reservstionDAO;
-	}
-
-	public void setReservstionDAO(ReservationDAO reservstionDAO) {
-		this.reservstionDAO = reservstionDAO;
-	}
+//	public ReservationDAO getReservstionDAO() {
+//		return reservstionDAO;
+//	}
+//
+//	public void setReservstionDAO(ReservationDAO reservstionDAO) {
+//		this.reservstionDAO = reservstionDAO;
+//	}
 }

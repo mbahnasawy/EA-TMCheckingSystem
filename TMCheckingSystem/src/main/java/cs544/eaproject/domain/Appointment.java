@@ -17,7 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class Appointment {
@@ -25,14 +25,14 @@ public class Appointment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date dateTime;
 
 	@Column(nullable = false)
 	private String location;
 
-	@OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL)
 	private Set<Reservation> reservations;
 
 	@ManyToOne

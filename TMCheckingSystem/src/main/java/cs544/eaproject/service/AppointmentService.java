@@ -13,6 +13,4 @@ public interface AppointmentService {
 //	public void updateAppointment(Appointment appointment);
 
 	public Appointment viewAppointment(int id);
-
-	public List<Appointment> getAllAppointmentsByChecker(int tmCheckerId);
 }
