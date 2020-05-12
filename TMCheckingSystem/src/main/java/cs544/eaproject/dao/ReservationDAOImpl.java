@@ -20,6 +20,7 @@ import cs544.eaproject.domain.Reservation;
 			return new ArrayList<Reservation>(query.list());
 			
 		}
+		
 	}
 		
 
