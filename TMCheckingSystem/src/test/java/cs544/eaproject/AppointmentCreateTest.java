@@ -4,16 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import cs544.eaproject.controller.AppointmentController;
 import cs544.eaproject.domain.Appointment;
-import cs544.eaproject.domain.User;
 import cs544.eaproject.repository.AppointmentRepository;
 import cs544.eaproject.util.Response;
 

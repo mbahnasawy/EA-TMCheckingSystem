@@ -20,6 +20,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 
 @Entity
@@ -32,6 +34,7 @@ public class Appointment {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Future
 	@NotNull
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date dateTime;
 
 	@NotNull
