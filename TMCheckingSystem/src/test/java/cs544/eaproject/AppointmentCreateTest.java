@@ -1,4 +1,4 @@
-package cs544.EAPoroject;
+package cs544.eaproject;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
