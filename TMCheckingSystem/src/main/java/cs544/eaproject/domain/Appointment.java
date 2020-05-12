@@ -16,27 +16,32 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 @Entity
 public class Appointment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-
+	
+	//Change to localDate
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@Future
 	@NotNull
 	private Date dateTime;
 
+	@NotNull
 	@Column(nullable = false)
 	private String location;
 
-	@OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL)
-	private Set<Reservation> reservations;
+	@OneToMany(mappedBy = "appointment",cascade = CascadeType.REMOVE,orphanRemoval = true)
+	private Set<@Valid Reservation> reservations;
 
+	@NotNull
 	@ManyToOne
 	private User provider;
 
@@ -86,13 +91,12 @@ public class Appointment {
 	}
 
 	public void setReservations(Set<Reservation> reservations) {
-		this.reservations = reservations;
+		this.reservations.addAll(reservations);
 	}
 
 	public void addReservation(Reservation reservation) {
 		// add this
 		reservation.setAppointment(this);
 		reservations.add(reservation);
-
 	}
 }
