@@ -1,25 +1,28 @@
 package cs544.eaproject.dao;
 
+import javax.transaction.Transactional;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
+import org.springframework.stereotype.Repository;
 import cs544.eaproject.domain.Appointment;
 
-public class AppointmentDAO implements CommonDAO {
-		
-		private SessionFactory sf;
-		
-		public void setSessionFactory(SessionFactory sf) {
-			this.sf=sf;
-		}
 
-		@Override
-		public void cancel(int id) {
-			
-			sf.getCurrentSession().delete(sf.getCurrentSession().load(Appointment.class, id));
-			
-		}
-		
+@Transactional
+@Repository
+public class AppointmentDAO implements CommonDAO {
+
+	private SessionFactory sessionFactory;
+
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+	@Override
+	public void delete(long id) {
+
+		Session session = sessionFactory.getCurrentSession();
+		session.delete(session.load(Appointment.class, id));
 
 	}
 
-
+}

@@ -1,6 +1,7 @@
 package cs544.eaproject.domain;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,14 +20,14 @@ public class Reservation {
 	private ReservationStatus status;
 
 	// person requesting the reservation
-	//@Temporal(TemporalType.TIMESTAMP)
-	private String dateTime;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dateTime;
 	@ManyToOne
 	private User consumer;
 	@ManyToOne
 	private Appointment appointment;
 
-	public Reservation(String dateTime, User consumer) {
+	public Reservation(Date dateTime, User consumer) {
 		this.dateTime = dateTime;
 		this.consumer = consumer;
 		this.status = ReservationStatus.PENDING;
@@ -43,11 +44,11 @@ public class Reservation {
 		this.status = status;
 	}
 
-	public String getDateTime() {
+	public Date getDateTime() {
 		return dateTime;
 	}
 
-	public void setDateTime(String dateTime) {
+	public void setDateTime(Date dateTime) {
 		this.dateTime = dateTime;
 	}
 
