@@ -1,6 +1,5 @@
 package cs544.eaproject.service;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +20,7 @@ public class ReservationServiceTest {
 	
 	@Test
 	public void testInjectionNotNull() {
-		assertTrue(true);
+//		assertNotNull(reservationService.getReservstionDAO());
 	}
 	
 	
