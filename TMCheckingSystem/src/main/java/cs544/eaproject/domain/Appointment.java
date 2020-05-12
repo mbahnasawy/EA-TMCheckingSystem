@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 
 
@@ -24,16 +26,17 @@ public class Appointment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-
 	
+	//Change to localDate
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateTime;
 
+	@NotNull
 	@Column(nullable = false)
 	private String location;
 
-	@OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL)
-	private Set<Reservation> reservations;
+	@OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL,orphanRemoval = true)
+	private Set<@Valid Reservation> reservations;
 
 	@ManyToOne
 	private User provider;
@@ -91,6 +94,5 @@ public class Appointment {
 		// add this
 		reservation.setAppointment(this);
 		reservations.add(reservation);
-
 	}
 }

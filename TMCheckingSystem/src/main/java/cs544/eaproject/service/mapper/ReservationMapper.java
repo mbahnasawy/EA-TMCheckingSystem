@@ -1,21 +1,23 @@
 package cs544.eaproject.service.mapper;
 
+import org.springframework.stereotype.Component;
+
 import cs544.eaproject.domain.Reservation;
 import cs544.eaproject.service.dto.ReservationDto;
 
+@Component
 public class ReservationMapper {
 	
-	public static ReservationDto maptoReservationDto(Reservation reservation) {
+	public ReservationDto maptoReservationDto(Reservation reservation) {
 		ReservationDto reservationDto = new ReservationDto(reservation.getId()
 				, reservation.getStatus()
-				, reservation.getDateTime(),
-			reservation.getConsumer()
-			, reservation.getAppointment());
-		
+				, reservation.getDateTime(),null,null);
+		//reservation.getConsumer()
+		//reservation.getAppointment()
 		return reservationDto;
 	}
 	
-	public static Reservation mapToReservation(ReservationDto reservationDto) {
+	public Reservation mapToReservation(ReservationDto reservationDto) {
 		Reservation reservation = new Reservation();
 		reservation.setAppointment(reservationDto.getAppointment());
 		reservation.setConsumer(reservationDto.getConsumer());

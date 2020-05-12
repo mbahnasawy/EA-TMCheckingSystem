@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,17 +27,21 @@ public class User {
 	@Column(nullable = false)
 	@NotNull
 	private String email;
-	
-	@ManyToMany
+	@NotNull
+	@Column(unique = true)
+	private String userName;
+	@NotNull
+	private String password;
+	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Role> roles;
 
 
-	public User(String firstName, String lastName, String gender, @Email String email, Role role) {
+	public User(String firstName, String lastName, String gender, @Email String email, Set<Role> roles) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
 		this.email = email;
-		this.roles.add(role);
+		this.roles.addAll(roles);
 	}
 
 	public User() {
@@ -88,6 +93,22 @@ public class User {
 
 	public void addRole(Role role) {
 		roles.add(role);
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }
