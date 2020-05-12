@@ -10,7 +10,7 @@ import cs544.eaproject.Application;
 
 public class ReservationServiceTest {
 
-	static ReservationService reservationService ; 
+	static ReservationServiceImpl reservationService;
 	
 	@BeforeAll
 	public static void setupOnce() throws Exception{
@@ -19,8 +19,8 @@ public class ReservationServiceTest {
 	}
 	
 	@Test
-	public void testInjectionOnNull() {
-		assertNotNull("Injected Service is not Null", reservationService.toString());
+	public void testInjectionNotNull() {
+		assertNotNull(reservationService.getReservstionDAO());
 	}
 	
 	
