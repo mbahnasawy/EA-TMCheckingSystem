@@ -4,39 +4,46 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
 	@Column(nullable = false)
 	@NotNull
 	private String firstName;
+	@NotNull
 	private String lastName;
 	private String gender;
 	@Email
 	@Column(nullable = false)
 	@NotNull
 	private String email;
-	
-	@ManyToMany
+	@NotNull
+	@Column(unique = true)
+	private String userName;
+	@NotNull
+	@Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}$",message = "Password must match the pattern")
+	private String password;
+	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Role> roles;
 
 
-	public User(String firstName, String lastName, String gender, @Email String email, Role role) {
+	public User(String firstName, String lastName, String gender, @Email String email, Set<Role> roles) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
 		this.email = email;
-		this.roles.add(role);
+		this.roles.addAll(roles);
 	}
 
 	public User() {
@@ -88,6 +95,22 @@ public class User {
 
 	public void addRole(Role role) {
 		roles.add(role);
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

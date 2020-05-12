@@ -5,25 +5,29 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-
+//change to immutable 
 @Entity
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	private String name;
+	private String roleName;
 
-	public Role(String name) {
-		this.name = name;
+	
+	public Role() {
 	}
 
-	public String getName() {
-		return name;
+	public Role(String roleName) {
+		this.roleName = roleName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setName(String roleName) {
+		this.roleName = roleName;
 	}
 
 }
