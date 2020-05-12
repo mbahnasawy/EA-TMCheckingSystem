@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Reservation {
@@ -24,10 +26,12 @@ public class Reservation {
 	private ReservationStatus status;
 
 	// person requesting the reservation
-	//@Temporal(TemporalType.TIMESTAMP)
+	@FutureOrPresent
 	private Date dateTime;
+	@NotNull
 	@ManyToOne
 	private User consumer;
+	@NotNull
 	@ManyToOne
 	private Appointment appointment;
 

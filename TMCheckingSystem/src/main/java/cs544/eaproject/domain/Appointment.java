@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
 
@@ -29,15 +30,18 @@ public class Appointment {
 	
 	//Change to localDate
 	@Temporal(TemporalType.TIMESTAMP)
+	@Future
+	@NotNull
 	private Date dateTime;
 
 	@NotNull
 	@Column(nullable = false)
 	private String location;
 
-	@OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL,orphanRemoval = true)
+	@OneToMany(mappedBy = "appointment",cascade = CascadeType.REMOVE,orphanRemoval = true)
 	private Set<@Valid Reservation> reservations;
 
+	@NotNull
 	@ManyToOne
 	private User provider;
 
@@ -87,7 +91,7 @@ public class Appointment {
 	}
 
 	public void setReservations(Set<Reservation> reservations) {
-		this.reservations = reservations;
+		this.reservations.addAll(reservations);
 	}
 
 	public void addReservation(Reservation reservation) {

@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 public class User {
@@ -21,6 +22,7 @@ public class User {
 	@Column(nullable = false)
 	@NotNull
 	private String firstName;
+	@NotNull
 	private String lastName;
 	private String gender;
 	@Email
@@ -31,6 +33,7 @@ public class User {
 	@Column(unique = true)
 	private String userName;
 	@NotNull
+	@Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}$",message = "Password must match the pattern")
 	private String password;
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Role> roles;

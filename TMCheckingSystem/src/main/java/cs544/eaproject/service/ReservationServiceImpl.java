@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,6 @@ import cs544.eaproject.domain.ReservationStatus;
 import cs544.eaproject.repository.AppointmentRepository;
 import cs544.eaproject.repository.ReservationRepository;
 import cs544.eaproject.service.dto.ReservationDto;
-import cs544.eaproject.service.mapper.ReservationMapper;
 
 @Service
 @Transactional
@@ -24,9 +24,8 @@ public class ReservationServiceImpl implements ReservationService{
 	private ReservationRepository reservationRepository;
 	@Autowired
 	private AppointmentRepository appointmentRepository;
-	@Autowired 
-	private ReservationMapper reservationMapper;
-	
+	@Autowired
+	private ModelMapper modelMapper;
 	@Override
 	public ReservationDto createReservation(long userId, long appointmentId) {
 		// TODO Auto-generated method stub
@@ -69,7 +68,7 @@ public class ReservationServiceImpl implements ReservationService{
 			return null;
 		else {
 			return entityList.stream()
-					.map(reservationMapper::maptoReservationDto)
+					.map(entity -> modelMapper.map(entity, ReservationDto.class))
 					.collect(Collectors.toList());
 		}
 		
@@ -82,7 +81,7 @@ public class ReservationServiceImpl implements ReservationService{
 			return null;
 		}
 		else {
-			return reservationMapper.maptoReservationDto(entity);
+			return modelMapper.map(entity, ReservationDto.class) ;
 		}
 	}
 
@@ -91,7 +90,7 @@ public class ReservationServiceImpl implements ReservationService{
 		
 		// TODO Auto-generated method stub
 		Reservation reservation =reservationRepository.findById(id).orElseThrow(Exception::new);
-		return reservationMapper.maptoReservationDto(reservation);
+		return modelMapper.map(reservation, ReservationDto.class) ;
 	}
 	
 }
