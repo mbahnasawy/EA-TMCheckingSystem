@@ -8,6 +8,7 @@ import cs544.eaproject.dao.ReservationDAO;
 import cs544.eaproject.dao.UserDAO;
 import cs544.eaproject.service.AppointmentService;
 import cs544.eaproject.service.ReservationService;
+import cs544.eaproject.service.ReservationServiceImpl;
 import cs544.eaproject.service.UserService;
 
 @Configuration
@@ -39,7 +40,7 @@ public class AppConfig {
 	
 	@Bean
 	public ReservationService reservationService() {
-		ReservationService reservationService = new ReservationService();
+		ReservationService reservationService = new ReservationServiceImpl();
 		// TODO set DI
 		return reservationService;
 	}
