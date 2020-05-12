@@ -15,15 +15,15 @@ import cs544.eaproject.util.Response;
 import cs544.eaproject.util.ResponseStatus;
 
 @RestController
+@RequestMapping("/controller")
 public class AppointmentController {
 
 	@Autowired
 	AppointmentService appointmentService;
 
-	@RequestMapping(value = "appointment/create", method = RequestMethod.POST, headers = "Accept=application/json", produces = {
+	@RequestMapping(value = "/create", method = RequestMethod.POST, headers = "Accept=application/json", produces = {
 			"application/json" })
 	public Response createAppointment(@RequestBody Appointment appointmentDTO) {
-
 		Response response = new Response();
 
 		try {
