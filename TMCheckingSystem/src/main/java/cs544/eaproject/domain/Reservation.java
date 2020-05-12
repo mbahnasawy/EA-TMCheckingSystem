@@ -59,5 +59,4 @@ public class Reservation {
 		return "Reservation [id=" + id + ", status=" + status + ", date=" + date + ", appointment=" + appointment + "]";
 	}
 	
-	
 	}
