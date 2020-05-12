@@ -3,25 +3,25 @@ package cs544.eaproject.domain;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 
 @Entity
 public class Appointment {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Temporal(TemporalType.TIMESTAMP)
+//	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
 	private LocalDate dateTime;
 
@@ -29,7 +29,7 @@ public class Appointment {
 	private String location;
 
 	@OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL)
-	private List<Reservation> reservations;
+	private Set<Reservation> reservations;
 
 	@ManyToOne
 	private User provider;
@@ -75,8 +75,12 @@ public class Appointment {
 		this.provider = provider;
 	}
 
-	public List<Reservation> getReservations() {
-		return Collections.unmodifiableList(reservations);
+	public Set<Reservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(Set<Reservation> reservations) {
+		this.reservations = reservations;
 	}
 
 	public void addReservation(Reservation reservation) {
