@@ -2,6 +2,7 @@ package cs544.eaproject.domain;
 
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +14,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 
 
 @Entity
@@ -21,9 +25,9 @@ public class Appointment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-//	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false)
-	private LocalDate dateTime;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dateTime;
 
 	@Column(nullable = false)
 	private String location;
@@ -37,7 +41,7 @@ public class Appointment {
 	public Appointment() {
 	}
 
-	public Appointment(LocalDate dateTime, String location, User provider) {
+	public Appointment(Date dateTime, String location, User provider) {
 		this.dateTime = dateTime;
 		this.location = location;
 		this.provider = provider;
@@ -51,11 +55,11 @@ public class Appointment {
 		this.id = id;
 	}
 
-	public LocalDate getDateTime() {
+	public Date getDateTime() {
 		return dateTime;
 	}
 
-	public void setDateTime(LocalDate dateTime) {
+	public void setDateTime(Date dateTime) {
 		this.dateTime = dateTime;
 	}
 
