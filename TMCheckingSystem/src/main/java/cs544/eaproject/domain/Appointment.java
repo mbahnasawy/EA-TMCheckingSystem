@@ -1,64 +1,96 @@
 package cs544.eaproject.domain;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
+
+@Entity
 public class Appointment {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 
-	private int Id;
 	
-	 private LocalDate date;
-	 
-	 private User tmcheckr;
-	 
-	 private List<Reservation> reservation;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dateTime;
 
-	public Appointment(int id, LocalDate date, User tmcheckr, List<Reservation> reservation) {
-		super();
-		Id = id;
-		this.date = date;
-		this.tmcheckr = tmcheckr;
-		this.reservation = reservation;
+	@Column(nullable = false)
+	private String location;
+
+	@OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL)
+	private Set<Reservation> reservations;
+
+	@ManyToOne
+	private User provider;
+
+	public Appointment() {
 	}
 
-	public int getId() {
-		return Id;
+	public Appointment(Date dateTime, String location, User provider) {
+		this.dateTime = dateTime;
+		this.location = location;
+		this.provider = provider;
 	}
 
-	public void setId(int id) {
-		Id = id;
+	public long getId() {
+		return id;
 	}
 
-	public LocalDate getDate() {
-		return date;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public void setDate(LocalDate date) {
-		this.date = date;
+	public Date getDateTime() {
+		return dateTime;
 	}
 
-	public User getTmcheckr() {
-		return tmcheckr;
+	public void setDateTime(Date dateTime) {
+		this.dateTime = dateTime;
 	}
 
-	public void setTmcheckr(User tmcheckr) {
-		this.tmcheckr = tmcheckr;
+	public String getLocation() {
+		return location;
 	}
 
-	public List<Reservation> getReservation() {
-		return reservation;
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
-	public void setReservation(List<Reservation> reservation) {
-		this.reservation = reservation;
+	public User getProvider() {
+		return provider;
 	}
 
-	@Override
-	public String toString() {
-		return "Appointment [Id=" + Id + ", date=" + date + ", tmcheckr=" + tmcheckr + ", reservation=" + reservation
-				+ "]";
+	public void setProvider(User provider) {
+		this.provider = provider;
 	}
-	 
-	 
-	 
+
+	public Set<Reservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(Set<Reservation> reservations) {
+		this.reservations = reservations;
+	}
+
+	public void addReservation(Reservation reservation) {
+		// add this
+		reservation.setAppointment(this);
+		reservations.add(reservation);
+
+	}
 }
