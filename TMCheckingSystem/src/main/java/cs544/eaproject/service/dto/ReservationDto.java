@@ -19,9 +19,9 @@ public class ReservationDto {
 	
 	private Date dateTime;
 	
-	private User consumer;
+	//private User consumer;
 	
-	private Appointment appointment;
+	//private Appointment appointment;
 
 	public long getId() {
 		return id;
@@ -47,21 +47,21 @@ public class ReservationDto {
 		this.dateTime = dateTime;
 	}
 
-	public User getConsumer() {
-		return consumer;
-	}
-
-	public void setConsumer(User consumer) {
-		this.consumer = consumer;
-	}
-
-	public Appointment getAppointment() {
-		return appointment;
-	}
-
-	public void setAppointment(Appointment appointment) {
-		this.appointment = appointment;
-	}
+//	public User getConsumer() {
+//		return consumer;
+//	}
+//
+//	public void setConsumer(User consumer) {
+//		this.consumer = consumer;
+//	}
+//
+//	public Appointment getAppointment() {
+//		return appointment;
+//	}
+//
+//	public void setAppointment(Appointment appointment) {
+//		this.appointment = appointment;
+//	}
 	
 	
 }
