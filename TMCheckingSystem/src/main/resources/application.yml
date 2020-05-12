@@ -2,7 +2,7 @@ spring:
   application:
     name: sample-springdata-service
   datasource:
-    url: jdbc:mysql://localhost/tmchecking
+    url: jdbc:mysql://localhost/tmchecking?serverTimezone=UTC
     username: admin
     password: 123
     driverClassName: com.mysql.cj.jdbc.Driver

@@ -1,7 +1,5 @@
 package cs544.eaproject.controller;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,13 +7,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import cs544.eaproject.domain.Appointment;
-import cs544.eaproject.domain.User;
 import cs544.eaproject.service.AppointmentService;
 import cs544.eaproject.util.Response;
 import cs544.eaproject.util.ResponseStatus;
 
 @RestController
-@RequestMapping("/controller")
+@RequestMapping("/appointment")
 public class AppointmentController {
 
 	@Autowired
