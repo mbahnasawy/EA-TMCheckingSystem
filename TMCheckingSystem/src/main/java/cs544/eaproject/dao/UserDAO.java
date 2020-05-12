@@ -1,5 +1,5 @@
 package cs544.eaproject.dao;
 
-public class UserDAO {
+public class UserDAO implements CommonDAO {
 
 }
