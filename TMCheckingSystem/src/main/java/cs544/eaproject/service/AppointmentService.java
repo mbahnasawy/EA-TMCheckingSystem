@@ -1,5 +1,7 @@
 package cs544.eaproject.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,6 @@ import cs544.eaproject.dao.CommonDAO;
 import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.repository.AppointmentRepository;
 
-
 public interface AppointmentService {
 
 	public Appointment createAppointment(Appointment appointment);
@@ -20,5 +21,10 @@ public interface AppointmentService {
 //	public void updateAppointment(Appointment appointment);
 
 	public Appointment viewAppointment(int id);
+
 	public void delete(long id);
+
+	public List<Appointment> viewAppointments();
+
+	public List<Appointment> viewAppointmentsByProvider(long id);
 }
