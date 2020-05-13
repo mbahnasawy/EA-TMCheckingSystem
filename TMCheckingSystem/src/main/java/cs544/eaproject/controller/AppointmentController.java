@@ -45,8 +45,7 @@ public class AppointmentController {
 		return appointmentService.viewAppointmentsByProvider(id);
 	}
 
-
-	@RequestMapping(value = "/delete/{appointmentId}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{appointmentId}", method = RequestMethod.DELETE)
 	@Secured({ "ROLE_PROVIDER", "ROLE_ADMIN" })
 	public long delete(@PathVariable long appointmentId) throws Exception {
 		appointmentService.delete(appointmentId);
@@ -54,7 +53,7 @@ public class AppointmentController {
 
 	}
 
-	@RequestMapping(value = "/create", method = RequestMethod.POST, headers = "Accept=application/json", produces = {
+	@RequestMapping(value = "", method = RequestMethod.POST, headers = "Accept=application/json", produces = {
 			"application/json" })
 	@Secured({ "ROLE_PROVIDER", "ROLE_ADMIN" })
 	@ResponseBody
