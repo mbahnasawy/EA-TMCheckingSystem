@@ -58,10 +58,10 @@ public class ReservationRepositoryIntegrationTest {
     	
     	Date date = new GregorianCalendar(2020, Calendar.MAY, 15).getTime();
 		Appointment a1 = new Appointment(date, "Virall Room32", user2);
-       // Reservation r1 = new Reservation(user1);
-       // a1.addReservation(r1);
+        Reservation r1 = new Reservation(user1);
+        a1.addReservation(r1);
         
-       // entityManager.persist(r1);
+        entityManager.persist(r1);
         entityManager.persist(a1);
         entityManager.persist(roleConsumer);
         entityManager.persist(roleProvider);
@@ -71,11 +71,11 @@ public class ReservationRepositoryIntegrationTest {
         entityManager.flush();
      
         // when
-       // Optional<Reservation> found = reservationRepository.findById(r1.getId());
+        Optional<Reservation> found = reservationRepository.findById(r1.getId());
      
-        // then
-      //  assertThat(found.get().getAppointment().getLocation())
-      //    .isEqualTo(a1.getLocation());
+      //   then
+        assertThat(found.get().getAppointment().getLocation())
+         .isEqualTo(a1.getLocation());
     }
  
 }
