@@ -54,9 +54,11 @@ public class ReservationServiceImpl implements ReservationService{
 		
 		User current_user = userDao.findByEmail(auth.getName());
 
-		Reservation reservation = new Reservation(current_user, appointmentDao.findById(appointmentId).get());
-				
-		reservationRepository.save(reservation);		
+		Reservation reservation = new Reservation(current_user);
+		Appointment appointment =  appointmentDao.findById(appointmentId).get();
+		appointment.addReservation(reservation);
+		
+		reservationRepository.save(reservation);	
 		
 		return convertEntityToResponse(reservation);
 	}
