@@ -49,12 +49,12 @@ public class ReservationRepositoryIntegrationTest {
     	Role roleConsumer = new Role("Consumer");
     	Set<Role> rolesUser1 = new HashSet<>();
     	rolesUser1.add(roleConsumer);
-    	User user1 = new User("Ahmed", "Mostafa", "Male", "mbahnasawy@miu.edu", roleConsumer, "");
+    	User user1 = new User("Ahmed", "Mostafa", "Male", "mbahnasawy@miu.edu", roleConsumer, "","admin");
     	
     	Role roleProvider = new Role("Provider");
     	Set<Role> rolesUser2 = new HashSet<>();
     	rolesUser2.add(roleProvider);
-    	User user2 = new User("Karim", "Salama", "Male", "ksalama@miu.edu", roleProvider , "");
+    	User user2 = new User("Karim", "Salama", "Male", "ksalama@miu.edu", roleProvider , "","consumer");
     	
     	Date date = new GregorianCalendar(2020, Calendar.MAY, 15).getTime();
 		Appointment a1 = new Appointment(date, "Virall Room32", user2);

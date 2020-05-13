@@ -1,4 +1,4 @@
-package cs544.eaproject.service.response;
+package cs544.eaproject.service.dto;
 
 public class AuthResponse {
 	private int status;
