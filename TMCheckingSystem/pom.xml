@@ -23,6 +23,12 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>org.sonarsource.scanner.maven</groupId>
+			<artifactId>sonar-maven-plugin</artifactId>
+			<version>3.7.0.1746</version>
+			<type>pom</type>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
@@ -35,7 +41,7 @@
 			<artifactId>modelmapper</artifactId>
 			<version>2.3.7</version>
 		</dependency>
-			<dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
@@ -94,5 +100,16 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profile>
+		<id>sonar</id>
+		<activation>
+			<activeByDefault>true</activeByDefault>
+		</activation>
+		<properties>
+			<sonar.host.url> http://localhost:9000</sonar.host.url>
+		</properties>
+	</profile>
+
 
 </project>
