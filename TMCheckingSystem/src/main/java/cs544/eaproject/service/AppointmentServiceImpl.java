@@ -43,7 +43,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	public AppointmentDto viewAppointment(long id) {
 		// TODO Auto-generated method stub
-		return convertEntityToResponse(appointmentRepository.findById(id).orElseThrow());
+		return convertEntityToResponse(appointmentRepository.findById(id).orElseThrow(null));
 	}
 
 	public void delete(long id) {
