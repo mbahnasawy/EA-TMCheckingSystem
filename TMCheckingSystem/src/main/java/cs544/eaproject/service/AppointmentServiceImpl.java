@@ -29,15 +29,14 @@ public class AppointmentServiceImpl implements AppointmentService {
 	}
 
 	@Override
-	public void cancelAppointment(int id) {
+	public void cancelAppointment(long id) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
-	public Appointment viewAppointment(int id) {
+	public Appointment viewAppointment(long id) {
 		// TODO Auto-generated method stub
-		return null;
+		return appointmentRepository.findById(id).orElseThrow();
 	}
 
 	public void delete(long id) {

@@ -29,6 +29,11 @@ public class AppointmentController {
 	@Autowired
 	UserDAO userDao;
 
+	@GetMapping("/{id}")
+	public Appointment getAppointment(@PathVariable long id) throws Exception {
+		return appointmentService.viewAppointment(id);
+	}
+	
 	@GetMapping
 	public List<Appointment> getAllAppointment() {
 		return appointmentService.viewAppointments();

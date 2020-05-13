@@ -16,11 +16,11 @@ public interface AppointmentService {
 
 	public Appointment createAppointment(Appointment appointment);
 
-	public void cancelAppointment(int id);
+	public void cancelAppointment(long id);
 
 //	public void updateAppointment(Appointment appointment);
 
-	public Appointment viewAppointment(int id);
+	public Appointment viewAppointment(long id);
 
 	public void delete(long id);
 
