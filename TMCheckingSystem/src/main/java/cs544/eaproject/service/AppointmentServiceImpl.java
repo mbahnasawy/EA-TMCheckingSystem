@@ -14,7 +14,7 @@ import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.repository.AppointmentRepository;
 
 @Transactional
-@Service("customerService")
+@Service("appointmentService")
 public class AppointmentServiceImpl implements AppointmentService {
 
 	@Autowired
@@ -39,7 +39,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public void delete(long id) {
 		appointmentRepository.deleteById(id);
 	}

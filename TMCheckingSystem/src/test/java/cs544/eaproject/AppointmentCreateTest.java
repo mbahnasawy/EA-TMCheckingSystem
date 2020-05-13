@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import cs544.eaproject.controller.AppointmentController;
 import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.repository.AppointmentRepository;
-import cs544.eaproject.util.Response;
 
 @SpringBootTest
 //@RunWith(SpringRunner.class)
@@ -32,8 +31,8 @@ public final class AppointmentCreateTest {
 		Appointment appointment = null;
 		try {
 			appointment = new Appointment(simpleDateFormat.parse("2028-09-09"), "classroom", null);
-			Response response = appointmentController.createAppointment(appointment);
-			Appointment result = appointmentRepository.getOne(((Appointment) response.getResult()).getId());
+			Appointment response = appointmentController.createAppointment(appointment);
+			Appointment result = appointmentRepository.getOne(response.getId());
 			assertThat(appointment).isEqualTo(result);
 
 		} catch (ParseException e) {
@@ -52,8 +51,8 @@ public final class AppointmentCreateTest {
 		Appointment appointment = null;
 		try {
 			appointment = new Appointment(simpleDateFormat.parse("2038-01-01"), "office", null);
-			Response response = appointmentController.createAppointment(appointment);
-			Appointment result = appointmentRepository.getOne(((Appointment) response.getResult()).getId());
+			Appointment response = appointmentController.createAppointment(appointment);
+			Appointment result = appointmentRepository.getOne(response.getId());
 			assertThat(appointment).isEqualTo(result);
 
 		} catch (ParseException e) {
