@@ -36,7 +36,7 @@ class AppointmentServiceTest {
     public void setUp() {
         //given
     	Role roleProvider = new Role("Provider");
-    	user= new User("Karim", "Salama", "Male", "ksalama@miu.edu", roleProvider , "");
+    	user= new User("Karim", "Salama", "Male", "ksalama@miu.edu", roleProvider , "123", "ksalama");
     	
     	Date date = new GregorianCalendar(2020, Calendar.MAY, 15).getTime();
 		appointment = new Appointment(date, "Virall Room32", user);
