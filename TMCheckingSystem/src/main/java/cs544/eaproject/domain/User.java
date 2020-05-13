@@ -1,5 +1,6 @@
 package cs544.eaproject.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -25,12 +26,9 @@ public class User {
 	private String lastName;
 	private String gender;
 	@Email
-	@Column(nullable = false)
 	@NotNull
+	@Column(nullable = false,unique = true)
 	private String email;
-	@NotNull
-	@Column(unique = true)
-	private String userName;
 	@NotNull
 	@Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}$",message = "Password must match the pattern")
 	private String password;
@@ -43,7 +41,8 @@ public class User {
 		this.gender = gender;
 		this.email = email;
 		this.password = password;
-		this.roles.addAll(roles);
+		roles =new HashSet<>();
+		this.roles.add(role);
 	}
 
 	public User() {
@@ -97,13 +96,6 @@ public class User {
 		roles.add(role);
 	}
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
 
 	public String getPassword() {
 		return password;

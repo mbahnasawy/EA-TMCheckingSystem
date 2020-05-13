@@ -10,6 +10,7 @@ import javax.persistence.TemporalType;
 import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.domain.ReservationStatus;
 import cs544.eaproject.domain.User;
+import cs544.eaproject.service.request.AuthRequest;
 
 public class ReservationDto {
 
@@ -19,8 +20,10 @@ public class ReservationDto {
 	
 	private Date dateTime;
 	
-	private Appointment appointment;
-
+	private AppointmentDto appointment;
+	
+	private userDto consumer;
+	
 	public long getId() {
 		return id;
 	}
@@ -45,21 +48,21 @@ public class ReservationDto {
 		this.dateTime = dateTime;
 	}
 
-//	public User getConsumer() {
-//		return consumer;
-//	}
-//
-//	public void setConsumer(User consumer) {
-//		this.consumer = consumer;
-//	}
-//
-//	public Appointment getAppointment() {
-//		return appointment;
-//	}
-//
-//	public void setAppointment(Appointment appointment) {
-//		this.appointment = appointment;
-//	}
+	public userDto getConsumer() {
+		return consumer;
+	}
+
+	public void setConsumer(userDto consumer) {
+		this.consumer = consumer;
+	}
+
+	public AppointmentDto getAppointment() {
+		return appointment;
+	}
+
+	public void setAppointment(AppointmentDto appointment) {
+		this.appointment = appointment;
+	}
 	
 	
 }

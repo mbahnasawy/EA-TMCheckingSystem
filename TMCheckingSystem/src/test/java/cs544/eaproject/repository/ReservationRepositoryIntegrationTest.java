@@ -10,8 +10,6 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -26,7 +24,7 @@ import cs544.eaproject.domain.Reservation;
 import cs544.eaproject.domain.Role;
 import cs544.eaproject.domain.User;
 
-@RunWith(SpringRunner.class)
+//@RunWith(SpringRunner.class)
 @DataJpaTest
 public class ReservationRepositoryIntegrationTest {
  

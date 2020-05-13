@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.aop.ThrowsAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,9 +20,13 @@ import cs544.eaproject.dao.UserDAO;
 import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.domain.Reservation;
 import cs544.eaproject.domain.ReservationStatus;
+import cs544.eaproject.domain.Role;
 import cs544.eaproject.domain.User;
+import cs544.eaproject.integration.JMSSener;
+import cs544.eaproject.integration.Sender;
 import cs544.eaproject.repository.AppointmentRepository;
 import cs544.eaproject.repository.ReservationRepository;
+import cs544.eaproject.repository.RoleRepository;
 import cs544.eaproject.service.dto.ReservationDto;
 
 @Service
@@ -35,14 +40,18 @@ public class ReservationServiceImpl implements ReservationService{
 	private  UserDAO userDao ; 
 	
 	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Autowired
 	private  AppointmentRepository appointmentDao ; 
 	
-//	@Autowired
-//	private AppointmentRepository appointmentRepository;
+	@Autowired
+	private Sender mailSender;
+
 	@Autowired
 	private ModelMapper modelMapper;
 	@Override
-	public ReservationDto createReservation(long appointmentId) {
+	public ReservationDto createReservation(long appointmentId) throws Exception {
 		// TODO Auto-generated method stub
 		//Reservation reservation = reservationMapper.mapToReservation(reservationdto);
 		//reservation = reservationRepository.save(reservation);
@@ -53,11 +62,11 @@ public class ReservationServiceImpl implements ReservationService{
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
 		User current_user = userDao.findByEmail(auth.getName());
-
+		if(checkReservationExists(current_user.getId(),appointmentId))
+			throw new Exception("you already Reserved");
 		Reservation reservation = new Reservation(current_user);
 		Appointment appointment =  appointmentDao.findById(appointmentId).get();
 		appointment.addReservation(reservation);
-		
 		reservationRepository.save(reservation);	
 		
 		return convertEntityToResponse(reservation);
@@ -67,7 +76,13 @@ public class ReservationServiceImpl implements ReservationService{
 	public boolean acceptReservation(long ReservationId) throws Exception {
 		// TODO Auto-generated method stub
 		Reservation reservation =reservationRepository.findById(ReservationId).orElseThrow(Exception::new);
-		reservation.setStatus(ReservationStatus.ACCEPTED);				
+		List<Reservation> reservationlst = reservationRepository.getReservationByAppId(reservation.getAppointment());
+		reservationlst.forEach(e -> e.setStatus(ReservationStatus.DECLINED));
+		reservation.setStatus(ReservationStatus.ACCEPTED);
+		mailSender.createMsg(reservation.getConsumer().getEmail(), 
+				"Congratulations your Reservation is approved by Mr."
+		+reservation.getAppointment().getProvider().getFirstName()
+		+" At : "+ reservation.getAppointment().getDateTime());
 		return true;
 	}
 
@@ -75,7 +90,6 @@ public class ReservationServiceImpl implements ReservationService{
 	public boolean cancelReservation(long ReservationId) throws Exception {
 		// TODO Auto-generated method stub
 		Reservation reservation =reservationRepository.findById(ReservationId).orElseThrow(Exception::new);
-		
 		reservationRepository.delete(reservation);
 		return true;
 	}
@@ -118,5 +132,26 @@ public class ReservationServiceImpl implements ReservationService{
 		Reservation reservation =reservationRepository.findById(id).orElseThrow(Exception::new);
 		return modelMapper.map(reservation, ReservationDto.class) ;
 	}
+
+	@Override
+	public boolean checkReservationExists(long userId , long appointmentId) {
+		// TODO Auto-generated method stub
+		Reservation reservation=
+				reservationRepository.checkReservationExists(userId, appointmentId);
+		if(reservation ==null)
+			return false;
+		return true;
+					
+	}
+	
+	
+//	@Override
+//	public void test() {
+//		Role role = roleRepository.getOne(1L);
+//		System.out.println(role);
+//		User user = new User("karim", "slaah", "male", "teez", role, "5165161");
+//		user.setUserName("a7a");
+//		userDao.save(user);
+//	}
 	
 }

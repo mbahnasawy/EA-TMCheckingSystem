@@ -9,7 +9,7 @@ public interface ReservationService {
 
 	public ReservationDto getReservationbyId(long id)throws Exception  ;
 	
-	public ReservationDto createReservation(long appointmentId);
+	public ReservationDto createReservation(long appointmentId)throws Exception;
 	
 	public boolean acceptReservation(long ReservationId)throws Exception;
 	
@@ -21,5 +21,7 @@ public interface ReservationService {
 	
 	ReservationDto convertEntityToResponse(Reservation entity);
 	
+	public boolean checkReservationExists(long userId , long appointmentId);
+//	public void test();
 	
 }
