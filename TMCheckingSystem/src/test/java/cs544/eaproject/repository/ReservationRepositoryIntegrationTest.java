@@ -49,19 +49,19 @@ public class ReservationRepositoryIntegrationTest {
     	Role roleConsumer = new Role("Consumer");
     	Set<Role> rolesUser1 = new HashSet<>();
     	rolesUser1.add(roleConsumer);
-    	User user1 = new User("Ahmed", "Mostafa", "Male", "mbahnasawy@miu.edu", roleConsumer, "");
+    	User user1 = new User("Ahmed", "Mostafa", "Male", "mbahnasawy@miu.edu", roleConsumer, "","admin");
     	
     	Role roleProvider = new Role("Provider");
     	Set<Role> rolesUser2 = new HashSet<>();
     	rolesUser2.add(roleProvider);
-    	User user2 = new User("Karim", "Salama", "Male", "ksalama@miu.edu", roleProvider , "");
+    	User user2 = new User("Karim", "Salama", "Male", "ksalama@miu.edu", roleProvider , "","consumer");
     	
     	Date date = new GregorianCalendar(2020, Calendar.MAY, 15).getTime();
 		Appointment a1 = new Appointment(date, "Virall Room32", user2);
-       // Reservation r1 = new Reservation(user1);
-       // a1.addReservation(r1);
+        Reservation r1 = new Reservation(user1);
+        a1.addReservation(r1);
         
-       // entityManager.persist(r1);
+        entityManager.persist(r1);
         entityManager.persist(a1);
         entityManager.persist(roleConsumer);
         entityManager.persist(roleProvider);
@@ -71,11 +71,11 @@ public class ReservationRepositoryIntegrationTest {
         entityManager.flush();
      
         // when
-       // Optional<Reservation> found = reservationRepository.findById(r1.getId());
+        Optional<Reservation> found = reservationRepository.findById(r1.getId());
      
-        // then
-      //  assertThat(found.get().getAppointment().getLocation())
-      //    .isEqualTo(a1.getLocation());
+      //   then
+        assertThat(found.get().getAppointment().getLocation())
+         .isEqualTo(a1.getLocation());
     }
  
 }

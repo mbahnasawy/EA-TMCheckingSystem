@@ -15,13 +15,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import cs544.eaproject.dao.AppointmentDAO;
-import cs544.eaproject.dao.UserDAO;
 import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.domain.Reservation;
 import cs544.eaproject.domain.ReservationStatus;
 import cs544.eaproject.domain.User;
 import cs544.eaproject.repository.AppointmentRepository;
 import cs544.eaproject.repository.ReservationRepository;
+import cs544.eaproject.repository.UserRepository;
 import cs544.eaproject.service.dto.ReservationDto;
 
 @Service
@@ -32,7 +32,7 @@ public class ReservationServiceImpl implements ReservationService{
 	private ReservationRepository reservationRepository;
 	
 	@Autowired
-	private  UserDAO userDao ; 
+	private UserRepository userRepository;
 	
 	@Autowired
 	private  AppointmentRepository appointmentDao ; 
@@ -52,7 +52,7 @@ public class ReservationServiceImpl implements ReservationService{
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
-		User current_user = userDao.findByEmail(auth.getName());
+		User current_user = userRepository.findByUserName(auth.getName());
 
 		Reservation reservation = new Reservation(current_user);
 		Appointment appointment =  appointmentDao.findById(appointmentId).get();
