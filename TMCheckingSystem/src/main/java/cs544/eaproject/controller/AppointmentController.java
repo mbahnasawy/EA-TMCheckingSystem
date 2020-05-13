@@ -3,6 +3,7 @@ package cs544.eaproject.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +32,7 @@ public class AppointmentController {
 	UserRepository userRepository;
 
 	@GetMapping("/{id}")
+	@Secured({ "ROLE_PROVIDER", "ROLE_ADMIN", "ROLE_CONSUMER" })
 	public AppointmentDto getAppointment(@PathVariable long id) throws Exception {
 		return appointmentService.viewAppointment(id);
 	}
