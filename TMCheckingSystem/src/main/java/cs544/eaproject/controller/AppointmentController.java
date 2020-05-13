@@ -18,6 +18,7 @@ import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.domain.User;
 import cs544.eaproject.repository.UserRepository;
 import cs544.eaproject.service.AppointmentService;
+import cs544.eaproject.service.dto.AppointmentDto;
 
 @RestController
 @RequestMapping("/appointments")
@@ -29,20 +30,27 @@ public class AppointmentController {
 	@Autowired
 	UserRepository userRepository;
 
+	@GetMapping("/{id}")
+	public AppointmentDto getAppointment(@PathVariable long id) throws Exception {
+		return appointmentService.viewAppointment(id);
+	}
+
 	@GetMapping
-	public List<Appointment> getAllAppointment() {
+	public List<AppointmentDto> getAllAppointment() {
 		return appointmentService.viewAppointments();
 	}
 
 	@GetMapping("/provider/{id}")
-	public List<Appointment> getAllAppointmentByProvider(@PathVariable long id) {
+	public List<AppointmentDto> getAllAppointmentByProvider(@PathVariable long id) {
 		return appointmentService.viewAppointmentsByProvider(id);
 	}
 
+
 	@RequestMapping(value = "/delete/{appointmentId}", method = RequestMethod.DELETE)
 	@Secured({ "ROLE_PROVIDER", "ROLE_ADMIN" })
-	public void delete(@PathVariable long appointmentId) throws Exception {
+	public long delete(@PathVariable long appointmentId) throws Exception {
 		appointmentService.delete(appointmentId);
+		return appointmentId;
 
 	}
 
@@ -50,12 +58,12 @@ public class AppointmentController {
 			"application/json" })
 	@Secured({ "ROLE_PROVIDER", "ROLE_ADMIN" })
 	@ResponseBody
-	public Appointment createAppointment(@RequestBody Appointment appointmentDTO) {
+	public AppointmentDto createAppointment(@RequestBody AppointmentDto appointmentDTO) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		User current_user = userRepository.findByUserName(auth.getName());
 		appointmentDTO.setProvider(current_user);
-		Appointment appointment = appointmentService.createAppointment(appointmentDTO);
+		AppointmentDto appointment = appointmentService.createAppointment(appointmentDTO);
 
 		return appointment;
 	}

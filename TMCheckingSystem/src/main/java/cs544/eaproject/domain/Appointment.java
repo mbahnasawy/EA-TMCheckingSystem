@@ -22,26 +22,24 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-
-
 @Entity
 public class Appointment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
-	//Change to localDate
+
+	// Change to localDate
 	@Temporal(TemporalType.TIMESTAMP)
 	@Future
 	@NotNull
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date dateTime;
 
 	@NotNull
 	@Column(nullable = false)
 	private String location;
 
-	@OneToMany(mappedBy = "appointment",cascade = CascadeType.REMOVE,orphanRemoval = true)
+	@OneToMany(mappedBy = "appointment", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private Set<@Valid Reservation> reservations;
 
 	@NotNull
@@ -94,7 +92,9 @@ public class Appointment {
 	}
 
 	public void setReservations(Set<Reservation> reservations) {
-		this.reservations.addAll(reservations);
+		if (reservations != null) {
+			this.reservations.addAll(reservations);
+		}
 	}
 
 	public void addReservation(Reservation reservation) {
