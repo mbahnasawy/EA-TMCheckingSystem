@@ -41,16 +41,12 @@ public class AppointmentController {
 
 
 	@RequestMapping(value ="/delete/{appointmentId}", method = RequestMethod.DELETE)
-	public String delete(@PathVariable long appointmentId) throws Exception{
+	public long delete(@PathVariable long appointmentId) throws Exception{
 
 
-		try {
-		appointmentService.delete(appointmentId);
-		return "Appointment removed!";
-		}catch(Exception e) {
-		return "No appointment found!";	
-		}
 		
+		appointmentService.delete(appointmentId);
+		return appointmentId;
 
 	}
 
