@@ -21,7 +21,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import cs544.eaproject.controller.UserController;
 import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.service.AppointmentService;
-import cs544.eaproject.service.response.AuthResponse;
 import io.jsonwebtoken.lang.Assert;
 
 @SpringBootTest
@@ -57,7 +56,7 @@ public final class AppointmentCreateTest {
 					.perform(post("/authenticate").content(jsonStr).accept(MediaType.APPLICATION_JSON))
 					.andExpect(status().isOk()).andReturn();
 
-			token = ((AuthResponse) response.getBody()).getToken();
+			token = ((cs544.eaproject.service.dto.AuthResponse) response.getBody()).getToken();
 
 		} catch (Exception e) {
 			e.printStackTrace();
