@@ -36,11 +36,11 @@ public class Reservation {
 	@ManyToOne
 	private Appointment appointment;
 
-	public Reservation(User consumer, Appointment appointment) {
+	public Reservation(User consumer) {
 		this.dateTime = Date.from( LocalDateTime.now().atZone( ZoneId.systemDefault()).toInstant());
 		this.consumer = consumer;
 		this.status = ReservationStatus.PENDING;
-		this.appointment = appointment;
+	
 	}
 
 	public Reservation() {
