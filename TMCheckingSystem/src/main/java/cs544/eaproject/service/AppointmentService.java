@@ -11,20 +11,21 @@ import cs544.eaproject.dao.AppointmentDAO;
 import cs544.eaproject.dao.CommonDAO;
 import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.repository.AppointmentRepository;
+import cs544.eaproject.service.dto.AppointmentDto;
 
 public interface AppointmentService {
 
-	public Appointment createAppointment(Appointment appointment);
+	public AppointmentDto createAppointment(AppointmentDto appointment);
 
 	public void cancelAppointment(long id);
 
 //	public void updateAppointment(Appointment appointment);
 
-	public Appointment viewAppointment(long id);
+	public AppointmentDto viewAppointment(long id);
 
 	public void delete(long id);
 
-	public List<Appointment> viewAppointments();
+	public List<AppointmentDto> viewAppointments();
 
-	public List<Appointment> viewAppointmentsByProvider(long id);
+	public List<AppointmentDto> viewAppointmentsByProvider(long id);
 }
