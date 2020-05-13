@@ -43,5 +43,17 @@ public class AppointmentServiceImpl implements AppointmentService {
 	public void delete(long id) {
 		appointmentRepository.deleteById(id);
 	}
+	
+	@Override
+	public List<Appointment> viewAppointments() {
+		// TODO Auto-generated method stub
+		return appointmentRepository.findAll();
+	}
+
+	@Override
+	public List<Appointment> viewAppointmentsByProvider(long id) {
+		// TODO Auto-generated method stub
+		return appointmentRepository.findByProvider(id);
+	}
 
 }

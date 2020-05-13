@@ -1,5 +1,7 @@
 package cs544.eaproject.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.Authentication;
@@ -26,6 +28,16 @@ public class AppointmentController {
 
 	@Autowired
 	UserDAO userDao;
+
+	@GetMapping
+	public List<Appointment> getAllAppointment() {
+		return appointmentService.viewAppointments();
+	}
+	
+	@GetMapping("/provider/{id}")
+	public List<Appointment> getAllAppointmentByProvider(@PathVariable long id) {
+		return appointmentService.viewAppointmentsByProvider(id);
+	}
 
 	@RequestMapping(value = "/delete/{appointmentId}", method = RequestMethod.DELETE)
 	public void delete(@PathVariable long appointmentId) throws Exception {
