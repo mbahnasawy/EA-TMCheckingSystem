@@ -32,7 +32,7 @@ public class ReservationControllerTest {
       throws Exception {
          
        	Role roleConsumer = new Role("Consumer");
-    	User user1 = new User("Ahmed", "Mostafa", "Male", "mbahnasawy@miu.edu", roleConsumer, "");
+    	User user1 = new User("Ahmed", "Mostafa", "Male", "mbahnasawy@miu.edu", roleConsumer, "123", "ksalama");
     	
 
     	Date date = new GregorianCalendar(2020, Calendar.MAY, 15).getTime();
