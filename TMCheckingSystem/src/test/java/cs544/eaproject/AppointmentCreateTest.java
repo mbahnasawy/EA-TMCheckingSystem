@@ -30,11 +30,9 @@ import com.jayway.jsonpath.JsonPath;
 
 import cs544.eaproject.controller.AppointmentController;
 import cs544.eaproject.controller.UserController;
-import cs544.eaproject.dao.UserDAO;
 import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.domain.User;
 import cs544.eaproject.service.AppointmentService;
-import cs544.eaproject.service.response.AuthResponse;
 import io.jsonwebtoken.lang.Assert;
 
 @SpringBootTest
@@ -51,9 +49,6 @@ public final class AppointmentCreateTest {
 	private AppointmentController appointmentController;
 
 	private String token;
-
-	@Autowired
-	private UserDAO userDAO;
 
 //	@Autowired
 //	private RestTemplate restTemplate;
@@ -110,6 +105,11 @@ public final class AppointmentCreateTest {
 					.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andReturn();
 			token = JsonPath.read(result.getResponse().getContentAsString(), "$.token");
 
+//			ResponseEntity res = userController.generateToken(null);
+//			ResponseEntity response = (ResponseEntity) this.mockMvc
+//					.perform(post("/authenticate").content(jsonStr).accept(MediaType.APPLICATION_JSON))
+//					.andExpect(status().isOk()).andReturn();
+//			token = ((cs544.eaproject.service.dto.AuthResponse) response.getBody()).getToken();
 		} catch (Exception e) {
 			e.printStackTrace();
 			assertThat("1").isEqualTo("0");
