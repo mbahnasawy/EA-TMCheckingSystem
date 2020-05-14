@@ -11,8 +11,16 @@ import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.domain.Reservation;
 
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-
-	@Query("select a from Reservation a where a.appointment.id = ?1")
-	List<Reservation> findByAppointment(long appointmentId);
+public interface ReservationRepository extends JpaRepository<Reservation, Long>{
+	
+	@Query("from Reservation r where r.appointment = :appointment")
+	public List<Reservation> getReservationByAppId(Appointment appointment);
+//	
+//	@Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false End "
+//			+ "from Reservation r "
+//			+ "where r.getConsumer.getId = :userID"
+//			+ "r.getAppointment.getId = :appointmentId")
+//	public boolean checkReservationExists(long userId , long appointmentId);
+	@Query("Select r from Reservation r where r.appointment.id = :appointmentId and r.consumer.id = :userId")
+	public Reservation checkReservationExists(long userId , long appointmentId);
 }
