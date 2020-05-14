@@ -32,7 +32,6 @@ public class Reservation {
 	@NotNull
 	@ManyToOne
 	private User consumer;
-	@NotNull
 	@ManyToOne
 	private Appointment appointment;
 

@@ -3,7 +3,9 @@ package cs544.eaproject.service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;import java.util.stream.Collector;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -55,9 +57,11 @@ public class ReservationServiceImpl implements ReservationService{
 		User current_user = userRepository.findByUserName(auth.getName());
 
 		Reservation reservation = new Reservation(current_user);
-		Appointment appointment =  appointmentDao.findById(appointmentId).get();
-		appointment.addReservation(reservation);
-		
+		Optional<Appointment> app = appointmentDao.findById(appointmentId);
+		if(app.isPresent()) {
+			Appointment appointment =  app.get();
+			appointment.addReservation(reservation);
+		}
 		reservationRepository.save(reservation);	
 		
 		return convertEntityToResponse(reservation);
