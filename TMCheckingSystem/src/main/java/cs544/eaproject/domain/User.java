@@ -30,19 +30,23 @@ public class User {
 	@Column(nullable = false,unique = true)
 	private String email;
 	@NotNull
+	@Column(unique = true)
+	private String userName;
+	@NotNull
 	@Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}$",message = "Password must match the pattern")
 	private String password;
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Role> roles;
 
-	public User(String firstName, String lastName, String gender, @Email String email, Role role,String password) {
+	public User(String firstName, String lastName, String gender, @Email String email, Set<Role> lstRole,String password,String userName) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
 		this.email = email;
 		this.password = password;
+		this.userName = userName;
 		roles =new HashSet<>();
-		this.roles.add(role);
+		this.roles.addAll(lstRole);
 	}
 
 	public User() {
@@ -104,4 +108,13 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
 }

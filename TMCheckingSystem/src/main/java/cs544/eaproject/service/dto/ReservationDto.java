@@ -10,7 +10,6 @@ import javax.persistence.TemporalType;
 import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.domain.ReservationStatus;
 import cs544.eaproject.domain.User;
-import cs544.eaproject.service.request.AuthRequest;
 
 public class ReservationDto {
 
