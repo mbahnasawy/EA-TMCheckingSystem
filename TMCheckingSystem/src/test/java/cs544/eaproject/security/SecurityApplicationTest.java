@@ -77,8 +77,6 @@ public class SecurityApplicationTest {
     public void givenAdminUser_whenGetHello_thenOk() throws Exception
     {
     	final String token = extractToken(login().andReturn());
-    	System.out.println(token);
-    	System.out.println();
         mockMvc.perform(MockMvcRequestBuilders.get("/appointments/hello")
                 .accept(MediaType.ALL))
                 .andExpect(status().isOk());
@@ -86,9 +84,18 @@ public class SecurityApplicationTest {
     
     @Test
     @WithUserDetails("provider")
-    public void givenProviderUser_whenGetHello_thenOk() throws Exception
+    public void givenProviderUser_whenGetHello_thenForbidden() throws Exception
     {
-        mockMvc.perform(MockMvcRequestBuilders.get("/appointments/hello")
+        mockMvc.perform(MockMvcRequestBuilders.get("/reservations")
+                .accept(MediaType.ALL))
+                .andExpect(status().isForbidden());
+    }
+    
+    @Test
+    @WithUserDetails("consumer")
+    public void givenConsumerUser_whenGetHello_thenForbidden() throws Exception
+    {
+        mockMvc.perform(MockMvcRequestBuilders.get("/reservations")
                 .accept(MediaType.ALL))
                 .andExpect(status().isForbidden());
     }
