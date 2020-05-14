@@ -4,14 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-//change to immutable 
+import javax.validation.constraints.NotNull;
+
 @Entity
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
+	@NotNull
 	private String roleName;
 
 	
@@ -28,6 +29,11 @@ public class Role {
 
 	public void setName(String roleName) {
 		this.roleName = roleName;
+	}
+
+	@Override
+	public String toString() {
+		return "Role [id=" + id + ", roleName=" + roleName + "]";
 	}
 
 }

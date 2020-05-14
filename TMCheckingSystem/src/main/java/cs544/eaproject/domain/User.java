@@ -1,5 +1,6 @@
 package cs544.eaproject.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -25,8 +26,8 @@ public class User {
 	private String lastName;
 	private String gender;
 	@Email
-	@Column(nullable = false)
 	@NotNull
+	@Column(nullable = false,unique = true)
 	private String email;
 	@NotNull
 	@Column(unique = true)
@@ -35,15 +36,17 @@ public class User {
 	@Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}$",message = "Password must match the pattern")
 	private String password;
 	@ManyToMany(fetch = FetchType.EAGER)
-	private Set<Role> roles;
+	private Set<Role> roles = new HashSet<>();
 
-
-	public User(String firstName, String lastName, String gender, @Email String email, Set<Role> roles) {
+	public User(String firstName, String lastName, String gender, @Email String email, Role role,String password,String userName) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
 		this.email = email;
-		this.roles.addAll(roles);
+		this.password = password;
+		this.userName = userName;
+		roles =new HashSet<>();
+		this.roles.add(role);
 	}
 
 	public User() {
@@ -97,13 +100,6 @@ public class User {
 		roles.add(role);
 	}
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
 
 	public String getPassword() {
 		return password;
@@ -113,4 +109,12 @@ public class User {
 		this.password = password;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
 }

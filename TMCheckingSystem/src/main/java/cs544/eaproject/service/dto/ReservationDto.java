@@ -19,10 +19,10 @@ public class ReservationDto {
 	
 	private Date dateTime;
 	
-	//private User consumer;
+	private AppointmentDto appointment;
 	
-	//private Appointment appointment;
-
+	private UserResponse consumer;
+	
 	public long getId() {
 		return id;
 	}
@@ -47,21 +47,27 @@ public class ReservationDto {
 		this.dateTime = dateTime;
 	}
 
-//	public User getConsumer() {
-//		return consumer;
-//	}
-//
-//	public void setConsumer(User consumer) {
-//		this.consumer = consumer;
-//	}
-//
-//	public Appointment getAppointment() {
-//		return appointment;
-//	}
-//
-//	public void setAppointment(Appointment appointment) {
-//		this.appointment = appointment;
-//	}
+	public UserResponse getConsumer() {
+		return consumer;
+	}
+
+	public void setConsumer(UserResponse consumer) {
+		this.consumer = consumer;
+	}
+
+	@Override
+	public String toString() {
+		return "ReservationDto [id=" + id + ", status=" + status + ", dateTime=" + dateTime + ", consumer=" + consumer
+				+ "]";
+	}
+
+	public AppointmentDto getAppointment() {
+		return appointment;
+	}
+
+	public void setAppointment(AppointmentDto appointment) {
+		this.appointment = appointment;
+	}
 	
 	
 }

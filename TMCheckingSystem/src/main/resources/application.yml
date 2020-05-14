@@ -1,17 +1,59 @@
+
+Mail.subject : Tm check Notification
+Accept.Resveration.Msg : Congratulations your Reservation is approved by
+Decline.Resveration.Msg : Sorry the reservation is Declined
+consumer.notfication : your TM check Appointment at 
+
+server:
+  port: 8081
 spring:    
   application:
     name: sample-springdata-service
   datasource:
-    url: jdbc:mysql://localhost/tmchecking
+    url: jdbc:mysql://localhost/tmchecking?serverTimezone=America/Chicago
     username: admin
     password: 123
     driverClassName: com.mysql.cj.jdbc.Driver
+  #  data: classpath:/data.sql
+  #  initialization-mode: always
   jpa:
     show-sql: true
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl      #ddl-auto: create
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+        
+        
+###### Email Properties ######
+  mail:    host: smtp.gmail.com
+    port: 587
+    username: miu.tm.check@gmail.com
+    password: 123456789k!
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        confirmation:
+          message: To confirm your account, please click here
+          url: http://localhost:8081 
+    test-connection: false
+
+#spring.mail.port =587
+#spring.mail.properties.mail.smtp.starttls.enable =true
+#spring.mail.username =example@gmail.com
+#spring.mail.password =example
+#spring.mail.properties.mail.smtp.starttls.required = true  
+#spring.mail.properties.mail.smtp.auth = true  
+#spring.mail.properties.mail.smtp.connectiontimeout = 5000  
+#spring.mail.properties.mail.smtp.timeout = 5000  
+#spring.mail.properties.mail.smtp.writetimeout = 5000  
+#mail.confirmation.url=http://localhost:4200/confirm-account?token=
+#mail.confirmation.message=To confirm your account, please click here : 
+#mail.confirmation.subject=Complete Registration!
+
