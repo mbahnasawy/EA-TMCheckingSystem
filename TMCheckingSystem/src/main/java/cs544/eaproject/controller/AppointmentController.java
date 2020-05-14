@@ -30,12 +30,6 @@ public class AppointmentController {
 	@Autowired
 	AppointmentService appointmentService;
 
-	@Autowired
-	UserRepository userRepository;
-
-	@Autowired
-	private ModelMapper modelMapper;
-
 	@GetMapping("/{id}")
 	@Secured({ "ROLE_PROVIDER", "ROLE_ADMIN", "ROLE_CONSUMER" })
 	public AppointmentDto getAppointment(@PathVariable long id) throws Exception {
@@ -65,11 +59,7 @@ public class AppointmentController {
 	@Secured({ "ROLE_PROVIDER", "ROLE_ADMIN" })
 	@ResponseBody
 	public AppointmentDto createAppointment(@RequestBody AppointmentDto appointmentDTO) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-		User current_user = userRepository.findByUserName(auth.getName());
-
-		appointmentDTO.setProvider(modelMapper.map(current_user, UserDto.class));
 		AppointmentDto appointment = appointmentService.createAppointment(appointmentDTO);
 
 		return appointment;
