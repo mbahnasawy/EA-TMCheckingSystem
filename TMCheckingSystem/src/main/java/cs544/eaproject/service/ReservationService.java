@@ -21,5 +21,5 @@ public interface ReservationService {
 	
 	ReservationDto convertEntityToResponse(Reservation entity);
 	
-	
+	public List<ReservationDto> getReservationsByAppointment(long appointmentId);
 }
