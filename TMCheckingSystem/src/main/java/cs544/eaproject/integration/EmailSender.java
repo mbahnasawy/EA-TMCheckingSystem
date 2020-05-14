@@ -26,7 +26,7 @@ public class EmailSender{
 	private EmailSenderService emailSenderService;
 	
 	private SimpleMailMessage simpleMailMessage;
-
+	
 	@Value("${Mail.subject}")
 	private String subject;
 	
@@ -36,8 +36,18 @@ public class EmailSender{
 	@Value("${Decline.Resveration.Msg}")
 	private String DeclineResvMsg;
 	
-	private String AppointmentCancelMsg;
+	@Value("${consumer.notfication}")
+	private String notfication;
 	
+	public void createNotfication(String mail,String sendToName,Date appointmentDate) {
+		// TODO Auto-generated method stub
+		String msg = "Mr."+ sendToName+" "+notfication+" "+appointmentDate.toString(); 
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+		mailMessage.setTo(mail);
+		mailMessage.setSubject(subject);
+		mailMessage.setText(msg);
+		Send(mailMessage);
+	}
 	
 	//@Schedules
 	public void createAcceptMsg(String mail,String senderName,Date date) {

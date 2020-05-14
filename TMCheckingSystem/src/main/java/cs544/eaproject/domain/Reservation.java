@@ -34,6 +34,7 @@ public class Reservation {
 	private User consumer;
 	@ManyToOne
 	private Appointment appointment;
+	
 
 	public Reservation(User consumer) {
 		this.dateTime = Date.from( LocalDateTime.now().atZone( ZoneId.systemDefault()).toInstant());
