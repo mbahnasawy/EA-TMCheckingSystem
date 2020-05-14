@@ -3,7 +3,8 @@ package cs544.eaproject.service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;import java.util.stream.Collector;
+import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -31,11 +32,11 @@ import cs544.eaproject.service.dto.ReservationDto;
 
 @Service
 @Transactional
-public class ReservationServiceImpl implements ReservationService{
+public class ReservationServiceImpl implements ReservationService {
 
 	@Autowired
 	private ReservationRepository reservationRepository;
-	
+
 	@Autowired
 	private  UserDAO userDao ; 
 	
@@ -50,22 +51,23 @@ public class ReservationServiceImpl implements ReservationService{
 
 	@Autowired
 	private ModelMapper modelMapper;
+
 	@Override
 	public ReservationDto createReservation(long appointmentId) throws Exception {
 		// TODO Auto-generated method stub
-		//Reservation reservation = reservationMapper.mapToReservation(reservationdto);
-		//reservation = reservationRepository.save(reservation);
-		//Reservation reservation = new Reservation(dateTime, consumer)
-		//return reservationMapper.maptoReservationDto(reservation);
-		//Appointment appointment = appointmentRepository.getOne(appointmentId);
-		
+		// Reservation reservation = reservationMapper.mapToReservation(reservationdto);
+		// reservation = reservationRepository.save(reservation);
+		// Reservation reservation = new Reservation(dateTime, consumer)
+		// return reservationMapper.maptoReservationDto(reservation);
+		// Appointment appointment = appointmentRepository.getOne(appointmentId);
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
 		User current_user = userDao.findByEmail(auth.getName());
 		if(checkReservationExists(current_user.getId(),appointmentId))
 			throw new Exception("you already Reserved");
 		Reservation reservation = new Reservation(current_user);
-		Appointment appointment =  appointmentDao.findById(appointmentId).get();
+		Appointment appointment = appointmentDao.findById(appointmentId).get();
 		appointment.addReservation(reservation);
 		reservationRepository.save(reservation);	
 		
@@ -97,40 +99,38 @@ public class ReservationServiceImpl implements ReservationService{
 	@Override
 	public List<ReservationDto> viewReservations() {
 		// TODO Auto-generated method stub
-		
-		return convertEntityListToResponseList(reservationRepository.findAll())	;
+
+		return convertEntityListToResponseList(reservationRepository.findAll());
 	}
 
 	@Override
 	public List<ReservationDto> convertEntityListToResponseList(List<Reservation> entityList) {
 		// TODO Auto-generated method stub
-		if(null == entityList)
+		if (null == entityList)
 			return null;
 		else {
-			return entityList.stream()
-					.map(entity -> modelMapper.map(entity, ReservationDto.class))
+			return entityList.stream().map(entity -> modelMapper.map(entity, ReservationDto.class))
 					.collect(Collectors.toList());
 		}
-		
+
 	}
 
 	@Override
 	public ReservationDto convertEntityToResponse(Reservation entity) {
 		// TODO Auto-generated method stub
-		if(null == entity) {
+		if (null == entity) {
 			return null;
-		}
-		else {
-			return modelMapper.map(entity, ReservationDto.class) ;
+		} else {
+			return modelMapper.map(entity, ReservationDto.class);
 		}
 	}
 
 	@Override
 	public ReservationDto getReservationbyId(long id) throws Exception {
-		
+
 		// TODO Auto-generated method stub
-		Reservation reservation =reservationRepository.findById(id).orElseThrow(Exception::new);
-		return modelMapper.map(reservation, ReservationDto.class) ;
+		Reservation reservation = reservationRepository.findById(id).orElseThrow(Exception::new);
+		return modelMapper.map(reservation, ReservationDto.class);
 	}
 
 	@Override

@@ -24,4 +24,5 @@ public interface ReservationService {
 	public boolean checkReservationExists(long userId , long appointmentId);
 //	public void test();
 	
+	public List<ReservationDto> getReservationsByAppointment(long appointmentId);
 }
