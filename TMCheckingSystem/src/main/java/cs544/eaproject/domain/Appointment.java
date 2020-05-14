@@ -102,4 +102,11 @@ public class Appointment {
 		reservation.setAppointment(this);
 		reservations.add(reservation);
 	}
+
+	@Override
+	public String toString() {
+		return "Appointment [dateTime=" + dateTime + ", location=" + location + ", reservations=" + reservations
+				+ ", provider=" + provider + "]";
+	}
+	
 }

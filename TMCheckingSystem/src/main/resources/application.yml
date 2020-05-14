@@ -2,6 +2,7 @@
 Mail.subject : Tm check Notification
 Accept.Resveration.Msg : Congratulations your Reservation is approved by
 Decline.Resveration.Msg : Sorry the reservation is Declined
+consumer.notfication : your TM check Appointment at 
 
 server:
   port: 8081
