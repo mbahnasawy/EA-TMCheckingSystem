@@ -1,61 +1,69 @@
 package cs544.eaproject.service;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.modelmapper.ModelMapper;
+import java.io.UnsupportedEncodingException;
+
+import org.json.JSONObject;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 
-import cs544.eaproject.domain.Appointment;
-import cs544.eaproject.domain.Role;
-import cs544.eaproject.domain.User;
-import cs544.eaproject.repository.AppointmentRepository;
-import cs544.eaproject.service.dto.AppointmentDto;
+public class AppointmentServiceTest {
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
-
-@SpringBootTest
-class AppointmentServiceTest {
-
-    private User user;
-    private Appointment appointment;
-    
 	@Autowired
-	private ModelMapper modelMapper;
+	private MockMvc mockMvc;
 
-    @InjectMocks
-    private AppointmentService appointmentService = new AppointmentServiceImpl();
+	public ResultActions login() throws Exception {
+		Object randomObj = new Object() {
+			public final String username = "admin";
+			public final String password = "123";
+		};
 
-    @Mock
-    private AppointmentRepository appointmentRepository;
+		ObjectMapper objectMapper = new ObjectMapper();
+		String json = objectMapper.writeValueAsString(randomObj);
+		return (ResultActions) this.mockMvc
+				.perform(post("/user/authenticate").contentType(MediaType.APPLICATION_JSON).content(json));
+	}
 
-    @BeforeEach
-    public void setUp() {
-        //given
-    	Role roleProvider = new Role("Provider");
-    	user= new User("Karim", "Salama", "Male", "ksalama@miu.edu", roleProvider , "123", "ksalama");
-    	
-    	Date date = new GregorianCalendar(2020, Calendar.MAY, 15).getTime();
-		appointment = new Appointment(date, "Virall Room32", user);
+	public String extractToken(MvcResult result) throws UnsupportedEncodingException {
+		return JsonPath.read(result.getResponse().getContentAsString(), "$.token");
+	}
 
-        //mocking
-        when(appointmentRepository.save(any(Appointment.class))).thenReturn(appointment);
-    }
+	@Test
+	public void createAppointmentTest() {
+		try {
 
-    @Test
-    public void test1() {
-    	
-        AppointmentDto created = appointmentService.createAppointment(modelMapper.map(appointment, AppointmentDto.class));
+			final String token = extractToken(login().andReturn());
 
-        assertEquals(user.getEmail(), created.getProvider().getEmail());
-    }
+			JSONObject json = new JSONObject();
+			String jsonStr = "";
+
+			json.put("location", "TEST LOCATION 1");
+			json.put("dateTime", "2029-11-11 10:00:00");
+			jsonStr = json.toString();
+
+			MvcResult result = this.mockMvc
+					.perform(post("/appointments/create").contentType(MediaType.APPLICATION_JSON).content(jsonStr)
+							.accept(MediaType.APPLICATION_JSON).header("Authorization", "Bearer " + token))
+					.andExpect(status().isOk()).andReturn();
+
+			Integer id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+
+			this.mockMvc.perform(MockMvcRequestBuilders.delete("/appointments/delete/{id}", id).header("Authorization",
+					"Bearer " + token)).andExpect(status().isOk());
+
+		} catch (Exception e) {
+//			assertThat("1").isEqualTo("0");
+			e.printStackTrace();
+		}
+	}
 }
