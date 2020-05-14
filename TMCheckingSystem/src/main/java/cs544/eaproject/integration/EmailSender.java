@@ -71,7 +71,7 @@ public class EmailSender{
 	
 	@Async
 	private void Send(SimpleMailMessage mailMessage) {
-		emailSenderService.sendEmail(mailMessage);
+		//emailSenderService.sendEmail(mailMessage);
 	}
 	
 

@@ -91,11 +91,12 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public boolean cancelReservation(long ReservationId) throws Exception {
+	public ReservationDto cancelReservation(long ReservationId) throws Exception {
 		// TODO Auto-generated method stub
 		Reservation reservation =reservationRepository.findById(ReservationId).orElseThrow(Exception::new);
+		reservation.setStatus(ReservationStatus.DECLINED);
 		reservationRepository.delete(reservation);
-		return true;
+		return modelMapper.map(reservation, ReservationDto.class);
 	}
 
 	@Override
