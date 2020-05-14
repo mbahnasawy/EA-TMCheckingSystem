@@ -11,6 +11,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import cs544.eaproject.controller.AppointmentControllerTest;
+import cs544.eaproject.controller.ReservationControllerTest;
 import cs544.eaproject.repository.AppointmentRepositoryTest;
 import cs544.eaproject.security.SecurityApplicationTest;
 import cs544.eaproject.service.AppointmentServiceTest;
@@ -20,7 +21,8 @@ import cs544.eaproject.service.AppointmentServiceTest;
 AppointmentControllerTest.class, 
 SecurityApplicationTest.class, 
 AppointmentRepositoryTest.class,
-AppointmentServiceTest.class})
+AppointmentServiceTest.class,
+ReservationControllerTest.class})
 class EaProjectApplicationTests {
 	
 }
