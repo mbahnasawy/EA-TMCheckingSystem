@@ -36,7 +36,7 @@ public class User {
 	@Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}$",message = "Password must match the pattern")
 	private String password;
 	@ManyToMany(fetch = FetchType.EAGER)
-	private Set<Role> roles;
+	private Set<Role> roles = new HashSet<>();
 
 	public User(String firstName, String lastName, String gender, @Email String email, Set<Role> lstRole,String password,String userName) {
 		this.firstName = firstName;
