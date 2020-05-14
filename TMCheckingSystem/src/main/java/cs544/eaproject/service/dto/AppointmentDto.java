@@ -11,15 +11,6 @@ import cs544.eaproject.domain.User;
 public class AppointmentDto {
 	private long id;
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date dateTime;
-
-	private String location;
-
-//	private Set<Reservation> reservations;
-
-	private UserDto provider;
-
 	public long getId() {
 		return id;
 	}
@@ -44,15 +35,23 @@ public class AppointmentDto {
 		this.location = location;
 	}
 
-	public UserDto getProvider() {
+	public UserResponse getProvider() {
 		return provider;
 	}
 
-	public void setProvider(UserDto provider) {
+	public void setProvider(UserResponse provider) {
 		this.provider = provider;
 	}
 
-//	public Set<Reservation> getReservations() {
-//		return reservations;
-//	}
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date dateTime;
+
+	private String location;
+
+	private UserResponse provider;
+	
+	
+
+
+
 }
