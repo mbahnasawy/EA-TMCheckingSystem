@@ -1,78 +1,45 @@
 package cs544.eaproject.repository;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.CoreMatchers.equalTo;
 
-import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
-import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
-
-import cs544.eaproject.security.SpringSecurityWebAuxTestConfig;
-
-@SpringBootTest(classes = SpringSecurityWebAuxTestConfig.class)
-@AutoConfigureMockMvc
-@RunWith(SpringJUnit4ClassRunner.class)
+import cs544.eaproject.domain.Appointment;
+import cs544.eaproject.domain.User;
+ 
+@RunWith(SpringRunner.class)
+@DataJpaTest
 public class AppointmentRepositoryTest {
 
 	@Autowired
-	private MockMvc mockMvc;
+	private AppointmentRepository appointmentRepository;
 
-	public ResultActions login() throws Exception {
-		Object randomObj = new Object() {
-			public final String username = "admin";
-			public final String password = "123";
-		};
+	@Autowired
+	private RoleRepository roleRepository;
+     
+    @Test
+    public void testRepository() 
+    {
+		User provider = new User("Ahmed", "Yassen", "Male", "x@y.com", roleRepository.findById(3L).get(), "P@ssw0rd",
+				"xyz");
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		String json = objectMapper.writeValueAsString(randomObj);
-		return (ResultActions) this.mockMvc
-				.perform(post("/user/authenticate").contentType(MediaType.APPLICATION_JSON).content(json));
-	}
+		GregorianCalendar calendar = new GregorianCalendar(2021, Calendar.FEBRUARY, 20, 18, 9, 22);
 
-	public String extractToken(MvcResult result) throws UnsupportedEncodingException {
-		return JsonPath.read(result.getResponse().getContentAsString(), "$.token");
-	}
+		Appointment a = new Appointment(calendar.getTime(), "Lab", provider);
 
-	@Test
-	public void createAppointmentTest() {
-		try {
+		appointmentRepository.save(a);
 
-			final String token = extractToken(login().andReturn());
-
-			JSONObject json = new JSONObject();
-			String jsonStr = "";
-
-			json.put("location", "TEST LOCATION 2");
-			json.put("dateTime", "2029-11-11 10:00:00");
-			jsonStr = json.toString();
-
-			MvcResult result = this.mockMvc
-					.perform(post("/appointments").contentType(MediaType.APPLICATION_JSON).content(jsonStr)
-							.accept(MediaType.APPLICATION_JSON).header("Authorization", "Bearer " + token))
-					.andExpect(status().isOk()).andReturn();
-
-			Integer id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
-
-			this.mockMvc.perform(MockMvcRequestBuilders.delete("/appointments/{id}", id).header("Authorization",
-					"Bearer " + token)).andExpect(status().isOk());
-
-		} catch (Exception e) {
-//			assertThat("1").isEqualTo("0");
-			e.printStackTrace();
-		}
-	}
+	 
+		appointmentRepository.save(a);
+         
+        Assert.assertNotNull(a.getId());
+    }
 }
