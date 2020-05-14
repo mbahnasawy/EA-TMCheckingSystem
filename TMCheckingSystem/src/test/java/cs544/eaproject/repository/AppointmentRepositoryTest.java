@@ -56,18 +56,18 @@ public class AppointmentRepositoryTest {
 			JSONObject json = new JSONObject();
 			String jsonStr = "";
 
-			json.put("location", "TEST LOCATION 1");
+			json.put("location", "TEST LOCATION 2");
 			json.put("dateTime", "2029-11-11 10:00:00");
 			jsonStr = json.toString();
 
 			MvcResult result = this.mockMvc
-					.perform(post("/appointments/create").contentType(MediaType.APPLICATION_JSON).content(jsonStr)
+					.perform(post("/appointments").contentType(MediaType.APPLICATION_JSON).content(jsonStr)
 							.accept(MediaType.APPLICATION_JSON).header("Authorization", "Bearer " + token))
 					.andExpect(status().isOk()).andReturn();
 
 			Integer id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
 
-			this.mockMvc.perform(MockMvcRequestBuilders.delete("/appointments/delete/{id}", id).header("Authorization",
+			this.mockMvc.perform(MockMvcRequestBuilders.delete("/appointments/{id}", id).header("Authorization",
 					"Bearer " + token)).andExpect(status().isOk());
 
 		} catch (Exception e) {
