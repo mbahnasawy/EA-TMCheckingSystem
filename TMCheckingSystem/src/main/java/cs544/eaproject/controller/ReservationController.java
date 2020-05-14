@@ -38,15 +38,15 @@ public class ReservationController {
 	// change to patch
 	@PatchMapping("/{id}")
 	@Secured({ "ROLE_PROVIDER", "ROLE_ADMIN" })
-	public void acceptReservation(@PathVariable long id) throws Exception {
-		reservationService.acceptReservation(id);
+	public ReservationDto acceptReservation(@PathVariable long id) throws Exception {
+		return reservationService.acceptReservation(id);
 	}
 
 	// delete
 	@DeleteMapping("/{id}")
 	@Secured({ "ROLE_CONSUMER", "ROLE_ADMIN" })
-	public void cancelReservation(@PathVariable long id) throws Exception {
-		reservationService.cancelReservation(id);
+	public ReservationDto cancelReservation(@PathVariable long id) throws Exception {
+		return reservationService.cancelReservation(id);
 	}
 
 	@RequestMapping(params = "appointmentId", method = RequestMethod.POST, headers = "Accept=application/json", produces = {

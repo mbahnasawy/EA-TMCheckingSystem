@@ -14,7 +14,7 @@ public interface ReservationService {
 	
 	public ReservationDto acceptReservation(long ReservationId)throws Exception;
 	
-	public boolean cancelReservation(long ReservationId)throws Exception;
+	public ReservationDto cancelReservation(long ReservationId)throws Exception;
 	
 	public List<ReservationDto> viewReservations();
 	

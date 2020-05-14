@@ -32,7 +32,7 @@ public class EmailJob {
 	
 	//minute (0 - 59)hour (0 - 23) day of the month (1 - 31)month (1 - 12)day of the week
 	
-	@Scheduled(cron = "1 * * * * *")
+	@Scheduled(cron = "5 * * * * *")
 	public void emailTask() {
 		System.out.println("Starting Email job");
 		Date date =Date.from( LocalDateTime.now().atZone( ZoneId.systemDefault()).toInstant());
