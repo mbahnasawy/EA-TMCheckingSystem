@@ -32,7 +32,7 @@ public class ReservationControllerTest {
 
 	public ResultActions login() throws Exception {
 		Object randomObj = new Object() {
-			public final String username = "sweldemichael";
+			public final String username = "admin";
 			public final String password = "123";
 		};
 
@@ -55,18 +55,16 @@ public class ReservationControllerTest {
 			JSONObject json = new JSONObject();
 			String jsonStr = "";
 
-		//	json.put("location", "TEST LOCATION 1");
-		//	json.put("dateTime", "2029-11-11 10:00:00");
 			jsonStr = json.toString();
 
 			MvcResult result = this.mockMvc
-					.perform(post("reservations/create?appointmentId=2").contentType(MediaType.APPLICATION_JSON).content(jsonStr)
+					.perform(post("/reservations").param("appointmentId", "20").contentType(MediaType.APPLICATION_JSON).content(jsonStr)
 							.accept(MediaType.APPLICATION_JSON).header("Authorization", "Bearer " + token))
 					.andExpect(status().isOk()).andReturn();
 
 			Integer id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
 
-			this.mockMvc.perform(MockMvcRequestBuilders.delete("/reservations/cancel/{id}", id).header("Authorization",
+			this.mockMvc.perform(MockMvcRequestBuilders.delete("/reservations/{id}", id).header("Authorization",
 					"Bearer " + token)).andExpect(status().isOk());
 
 		} catch (Exception e) {

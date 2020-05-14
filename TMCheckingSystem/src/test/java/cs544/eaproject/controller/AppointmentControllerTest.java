@@ -60,13 +60,42 @@ public final class AppointmentControllerTest {
 			jsonStr = json.toString();
 
 			MvcResult result = this.mockMvc
-					.perform(post("/appointments/create").contentType(MediaType.APPLICATION_JSON).content(jsonStr)
+					.perform(post("/appointments/").contentType(MediaType.APPLICATION_JSON).content(jsonStr)
 							.accept(MediaType.APPLICATION_JSON).header("Authorization", "Bearer " + token))
 					.andExpect(status().isOk()).andReturn();
 
 			Integer id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
 
-			this.mockMvc.perform(MockMvcRequestBuilders.delete("/appointments/delete/{id}", id).header("Authorization",
+			this.mockMvc.perform(MockMvcRequestBuilders.delete("/appointments/{id}", id).header("Authorization",
+					"Bearer " + token));
+
+		} catch (Exception e) {
+//			assertThat("1").isEqualTo("0");
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void deleteAppointmentTest() {
+		try {
+
+			final String token = extractToken(login().andReturn());
+
+			JSONObject json = new JSONObject();
+			String jsonStr = "";
+
+			json.put("location", "TEST LOCATION 1");
+			json.put("dateTime", "2029-11-11 10:00:00");
+			jsonStr = json.toString();
+
+			MvcResult result = this.mockMvc
+					.perform(post("/appointments/").contentType(MediaType.APPLICATION_JSON).content(jsonStr)
+							.accept(MediaType.APPLICATION_JSON).header("Authorization", "Bearer " + token))
+					.andReturn();
+
+			Integer id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+
+			this.mockMvc.perform(MockMvcRequestBuilders.delete("/appointments/{id}", id).header("Authorization",
 					"Bearer " + token)).andExpect(status().isOk());
 
 		} catch (Exception e) {
