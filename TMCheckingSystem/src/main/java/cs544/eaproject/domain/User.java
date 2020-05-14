@@ -38,7 +38,7 @@ public class User {
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Role> roles = new HashSet<>();
 
-	public User(String firstName, String lastName, String gender, @Email String email, Set<Role> lstRole,String password,String userName) {
+	public User(String firstName, String lastName, String gender, @Email String email, Role role,String password,String userName) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
@@ -46,7 +46,7 @@ public class User {
 		this.password = password;
 		this.userName = userName;
 		roles =new HashSet<>();
-		this.roles.addAll(lstRole);
+		this.roles.add(role);
 	}
 
 	public User() {
