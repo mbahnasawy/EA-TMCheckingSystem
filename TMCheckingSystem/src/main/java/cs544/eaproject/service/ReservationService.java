@@ -1,6 +1,7 @@
 package cs544.eaproject.service;
 
 import java.util.List;
+import java.util.Set;
 
 import cs544.eaproject.domain.Reservation;
 import cs544.eaproject.service.dto.ReservationDto;
@@ -11,7 +12,7 @@ public interface ReservationService {
 	
 	public ReservationDto createReservation(long appointmentId)throws Exception;
 	
-	public boolean acceptReservation(long ReservationId)throws Exception;
+	public ReservationDto acceptReservation(long ReservationId)throws Exception;
 	
 	public boolean cancelReservation(long ReservationId)throws Exception;
 	

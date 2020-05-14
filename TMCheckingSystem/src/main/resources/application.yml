@@ -1,5 +1,8 @@
 
 Mail.subject : Tm check Notification
+Accept.Resveration.Msg : Congratulations your Reservation is approved by
+Decline.Resveration.Msg : Sorry the reservation is Declined
+
 server:
   port: 8081
 spring:    

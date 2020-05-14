@@ -19,7 +19,7 @@ public class ReservationDto {
 	
 	private Date dateTime;
 	
-	private AppointmentDto appointment;
+	//private AppointmentDto appointment;
 	
 	private userDto consumer;
 	
@@ -55,13 +55,13 @@ public class ReservationDto {
 		this.consumer = consumer;
 	}
 
-	public AppointmentDto getAppointment() {
-		return appointment;
-	}
-
-	public void setAppointment(AppointmentDto appointment) {
-		this.appointment = appointment;
-	}
+//	public AppointmentDto getAppointment() {
+//		return appointment;
+//	}
+//
+//	public void setAppointment(AppointmentDto appointment) {
+//		this.appointment = appointment;
+//	}
 	
 	
 }

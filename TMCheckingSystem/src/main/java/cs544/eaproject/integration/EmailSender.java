@@ -1,5 +1,7 @@
 package cs544.eaproject.integration;
 
+import java.util.Date;
+
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -18,40 +20,49 @@ import cs544.eaproject.service.EmailSenderService;
 import javassist.Loader.Simple;
 
 @Component
-public class JMSSener implements Sender, Job{
+public class EmailSender{
 	
 	@Autowired
 	private EmailSenderService emailSenderService;
 	
 	private SimpleMailMessage simpleMailMessage;
-	
-	private SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();
-	
+
 	@Value("${Mail.subject}")
 	private String subject;
-
-	@Override
-	public void Send() {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	@Value("${Accept.Resveration.Msg}")
+	private String AcceptResvMsg;
+	
+	@Value("${Decline.Resveration.Msg}")
+	private String DeclineResvMsg;
+	
+	private String AppointmentCancelMsg;
+	
+	
 	//@Schedules
-	@Async
-	@Override
-	public void createMsg(String mail, String Text) {
+	public void createAcceptMsg(String mail,String senderName,Date date) {
+		// TODO Auto-generated method stub
+		String msg = AcceptResvMsg +" "+ senderName + " At  " + date.toString();
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+		mailMessage.setTo(mail);
+		mailMessage.setSubject(subject);
+		mailMessage.setText(msg);
+		Send(mailMessage);
+	}
+	
+	public void createDeclineMsg(String mail) {
 		// TODO Auto-generated method stub
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(mail);
 		mailMessage.setSubject(subject);
-		mailMessage.setText(Text);
-		emailSenderService.sendEmail(mailMessage);
-	}
-	@Override
-	public void execute(JobExecutionContext context) throws JobExecutionException {
-		// TODO Auto-generated method stub
-		
+		mailMessage.setText(DeclineResvMsg);
+		Send(mailMessage);
 	}
 	
+	@Async
+	private void Send(SimpleMailMessage mailMessage) {
+		emailSenderService.sendEmail(mailMessage);
+	}
 	
 
 }

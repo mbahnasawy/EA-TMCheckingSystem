@@ -24,6 +24,7 @@ public class ReservationController {
 	private ReservationService reservationService;
 
 	@GetMapping
+	@Secured({"ROLE_ADMIN" })
 	public List<ReservationDto> getAllReservation() {
 		return reservationService.viewReservations();
 	}
@@ -35,20 +36,20 @@ public class ReservationController {
 	}
 
 	// change to patch
-	@PatchMapping("/accept/{id}")
+	@PatchMapping("/{id}")
 	@Secured({ "ROLE_PROVIDER", "ROLE_ADMIN" })
 	public void acceptReservation(@PathVariable long id) throws Exception {
 		reservationService.acceptReservation(id);
 	}
 
 	// delete
-	@DeleteMapping("/cancel/{id}")
+	@DeleteMapping("/{id}")
 	@Secured({ "ROLE_CONSUMER", "ROLE_ADMIN" })
 	public void cancelReservation(@PathVariable long id) throws Exception {
 		reservationService.cancelReservation(id);
 	}
 
-	@RequestMapping(value = "/create", params = "appointmentId", method = RequestMethod.POST, headers = "Accept=application/json", produces = {
+	@RequestMapping(params = "appointmentId", method = RequestMethod.POST, headers = "Accept=application/json", produces = {
 			"application/json" })
 	@Secured({ "ROLE_CONSUMER", "ROLE_ADMIN" })
 	public ReservationDto createReservation(@RequestParam String appointmentId) throws Exception {
@@ -56,9 +57,10 @@ public class ReservationController {
 		return reservationService.createReservation(Long.parseLong(appointmentId));
 	}
 
-	@GetMapping("/appointment/{appointmentId}")
-	@Secured({ "ROLE_CONSUMER", "ROLE_ADMIN", "ROLE_PROVIDER" })
+	@GetMapping("/appointments/{appointmentId}")
+	@Secured({ "ROLE_ADMIN", "ROLE_PROVIDER" })
 	public List<ReservationDto> getReservationsByAppointment(@PathVariable long appointmentId) throws Exception {
 		return reservationService.getReservationsByAppointment(appointmentId);
 	}
+	
 }

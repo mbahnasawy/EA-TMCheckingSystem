@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -21,8 +23,7 @@ import cs544.eaproject.domain.Reservation;
 import cs544.eaproject.domain.ReservationStatus;
 import cs544.eaproject.domain.Role;
 import cs544.eaproject.domain.User;
-import cs544.eaproject.integration.JMSSener;
-import cs544.eaproject.integration.Sender;
+import cs544.eaproject.integration.EmailSender;
 import cs544.eaproject.repository.AppointmentRepository;
 import cs544.eaproject.repository.ReservationRepository;
 import cs544.eaproject.repository.RoleRepository;
@@ -46,7 +47,7 @@ public class ReservationServiceImpl implements ReservationService {
 	private  AppointmentRepository appointmentDao ; 
 	
 	@Autowired
-	private Sender mailSender;
+	private EmailSender mailSender;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -74,17 +75,19 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public boolean acceptReservation(long ReservationId) throws Exception {
+	public ReservationDto acceptReservation(long ReservationId) throws Exception {
 		// TODO Auto-generated method stub
 		Reservation reservation =reservationRepository.findById(ReservationId).orElseThrow(Exception::new);
 		List<Reservation> reservationlst = reservationRepository.getReservationByAppId(reservation.getAppointment());
 		reservationlst.forEach(e -> e.setStatus(ReservationStatus.DECLINED));
 		reservation.setStatus(ReservationStatus.ACCEPTED);
-		mailSender.createMsg(reservation.getConsumer().getEmail(), 
-				"Congratulations your Reservation is approved by Mr."
-		+reservation.getAppointment().getProvider().getFirstName()
-		+" At : "+ reservation.getAppointment().getDateTime());
-		return true;
+		mailSender.createAcceptMsg(reservation.getConsumer().getEmail()
+				, reservation.getAppointment().getProvider().getFirstName()
+				, reservation.getAppointment().getDateTime());
+		reservationlst.stream()
+						.filter(DeclinedResv -> DeclinedResv.getStatus().equals(ReservationStatus.DECLINED))
+						.forEach(DeclinedResv -> mailSender.createDeclineMsg(DeclinedResv.getConsumer().getEmail()));
+		return modelMapper.map(reservation, ReservationDto.class);
 	}
 
 	@Override
@@ -146,7 +149,9 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public List<ReservationDto> getReservationsByAppointment(long appointmentId) {
 		// TODO Auto-generated method stub
-		return null;
+		return convertEntityListToResponseList(appointmentDao.
+				findById(appointmentId).get().getReservations().stream()
+				.collect(Collectors.toList()));
 	}
 	
 	
