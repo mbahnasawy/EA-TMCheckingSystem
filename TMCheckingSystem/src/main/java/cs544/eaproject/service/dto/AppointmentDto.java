@@ -18,7 +18,7 @@ public class AppointmentDto {
 
 //	private Set<Reservation> reservations;
 
-	private User provider;
+	private UserDto provider;
 
 	public long getId() {
 		return id;
@@ -44,11 +44,11 @@ public class AppointmentDto {
 		this.location = location;
 	}
 
-	public User getProvider() {
+	public UserDto getProvider() {
 		return provider;
 	}
 
-	public void setProvider(User provider) {
+	public void setProvider(UserDto provider) {
 		this.provider = provider;
 	}
 

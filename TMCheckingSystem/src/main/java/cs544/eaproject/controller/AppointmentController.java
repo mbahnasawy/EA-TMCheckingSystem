@@ -1,7 +1,8 @@
-	package cs544.eaproject.controller;
+package cs544.eaproject.controller;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.security.access.annotation.Secured;
@@ -20,6 +21,7 @@ import cs544.eaproject.domain.User;
 import cs544.eaproject.repository.UserRepository;
 import cs544.eaproject.service.AppointmentService;
 import cs544.eaproject.service.dto.AppointmentDto;
+import cs544.eaproject.service.dto.UserDto;
 
 @RestController
 @RequestMapping("/appointments")
@@ -30,6 +32,9 @@ public class AppointmentController {
 
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@GetMapping("/{id}")
 	@Secured({ "ROLE_PROVIDER", "ROLE_ADMIN", "ROLE_CONSUMER" })
@@ -63,7 +68,8 @@ public class AppointmentController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		User current_user = userRepository.findByUserName(auth.getName());
-		appointmentDTO.setProvider(current_user);
+
+		appointmentDTO.setProvider(modelMapper.map(current_user, UserDto.class));
 		AppointmentDto appointment = appointmentService.createAppointment(appointmentDTO);
 
 		return appointment;
