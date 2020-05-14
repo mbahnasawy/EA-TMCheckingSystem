@@ -11,7 +11,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
-import cs544.eaproject.dao.AppointmentDAO;
 import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.repository.AppointmentRepository;
 import cs544.eaproject.service.dto.AppointmentDto;
