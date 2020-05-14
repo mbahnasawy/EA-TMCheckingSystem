@@ -7,6 +7,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,11 +48,17 @@ public class UserController {
 		return ResponseEntity.ok(new AuthResponse(token, "Login success", HttpStatus.OK.value()));
 	}
 
-	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json", produces = {
-			"application/json" })
+	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json", produces = { "application/json" })
 	@Secured({ "ROLE_ADMIN" })
 	public UserDto createUser(@RequestBody UserDto userDto) throws Exception {
 
 		return userService.createUser(userDto);
+	}
+
+	@RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
+	@Secured({ "ROLE_ADMIN" })
+	public Boolean deleteUser(@PathVariable long userId) throws Exception {
+
+		return userService.deleteUser(userId);
 	}
 }

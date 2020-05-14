@@ -56,6 +56,12 @@ public class UserService implements UserDetailsService {
 		return convertEntityToResponse(user);
 	}
 	
+	public Boolean deleteUser(long userId) {
+		
+		userRepository.deleteById(userId);
+		return true;
+	}
+	
 	public UserDto convertEntityToResponse(User entity) {
 		// TODO Auto-generated method stub
 		if (null == entity) {
