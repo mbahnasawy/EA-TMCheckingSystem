@@ -4,12 +4,15 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.aop.ThrowsAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,9 +21,12 @@ import org.springframework.stereotype.Service;
 import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.domain.Reservation;
 import cs544.eaproject.domain.ReservationStatus;
+import cs544.eaproject.domain.Role;
 import cs544.eaproject.domain.User;
+import cs544.eaproject.integration.EmailSender;
 import cs544.eaproject.repository.AppointmentRepository;
 import cs544.eaproject.repository.ReservationRepository;
+import cs544.eaproject.repository.RoleRepository;
 import cs544.eaproject.repository.UserRepository;
 import cs544.eaproject.service.dto.ReservationDto;
 
@@ -32,18 +38,22 @@ public class ReservationServiceImpl implements ReservationService {
 	private ReservationRepository reservationRepository;
 
 	@Autowired
-	private UserRepository userRepository;
-
+	private  UserRepository userDao ; 
+	
 	@Autowired
-	private AppointmentRepository appointmentDao;
+	private RoleRepository roleRepository;
+	
+	@Autowired
+	private  AppointmentRepository appointmentDao ; 
+	
+	@Autowired
+	private EmailSender mailSender;
 
-//	@Autowired
-//	private AppointmentRepository appointmentRepository;
 	@Autowired
 	private ModelMapper modelMapper;
 
 	@Override
-	public ReservationDto createReservation(long appointmentId) {
+	public ReservationDto createReservation(long appointmentId) throws Exception {
 		// TODO Auto-generated method stub
 		// Reservation reservation = reservationMapper.mapToReservation(reservationdto);
 		// reservation = reservationRepository.save(reservation);
@@ -52,31 +62,38 @@ public class ReservationServiceImpl implements ReservationService {
 		// Appointment appointment = appointmentRepository.getOne(appointmentId);
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-		User current_user = userRepository.findByUserName(auth.getName());
-
+		
+		User current_user = userDao.findByUserName(auth.getName());
+		if(checkReservationExists(current_user.getId(),appointmentId))
+			throw new Exception("you already Reserved");
 		Reservation reservation = new Reservation(current_user);
 		Appointment appointment = appointmentDao.findById(appointmentId).get();
 		appointment.addReservation(reservation);
-
-		reservationRepository.save(reservation);
-
+		reservationRepository.save(reservation);	
+		
 		return convertEntityToResponse(reservation);
 	}
 
 	@Override
-	public boolean acceptReservation(long ReservationId) throws Exception {
+	public ReservationDto acceptReservation(long ReservationId) throws Exception {
 		// TODO Auto-generated method stub
-		Reservation reservation = reservationRepository.findById(ReservationId).orElseThrow(Exception::new);
+		Reservation reservation =reservationRepository.findById(ReservationId).orElseThrow(Exception::new);
+		List<Reservation> reservationlst = reservationRepository.getReservationByAppId(reservation.getAppointment());
+		reservationlst.forEach(e -> e.setStatus(ReservationStatus.DECLINED));
 		reservation.setStatus(ReservationStatus.ACCEPTED);
-		return true;
+		mailSender.createAcceptMsg(reservation.getConsumer().getEmail()
+				, reservation.getAppointment().getProvider().getFirstName()
+				, reservation.getAppointment().getDateTime());
+		reservationlst.stream()
+						.filter(DeclinedResv -> DeclinedResv.getStatus().equals(ReservationStatus.DECLINED))
+						.forEach(DeclinedResv -> mailSender.createDeclineMsg(DeclinedResv.getConsumer().getEmail()));
+		return modelMapper.map(reservation, ReservationDto.class);
 	}
 
 	@Override
 	public boolean cancelReservation(long ReservationId) throws Exception {
 		// TODO Auto-generated method stub
-		Reservation reservation = reservationRepository.findById(ReservationId).orElseThrow(Exception::new);
-
+		Reservation reservation =reservationRepository.findById(ReservationId).orElseThrow(Exception::new);
 		reservationRepository.delete(reservation);
 		return true;
 	}
@@ -119,11 +136,32 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public List<ReservationDto> getReservationsByAppointment(long appointmentId) {
-		// TODO Auto-generated method stubs
-		List<ReservationDto> reservationDtos = convertEntityListToResponseList(
-				reservationRepository.findByAppointment(appointmentId));
-		return reservationDtos;
+	public boolean checkReservationExists(long userId , long appointmentId) {
+		// TODO Auto-generated method stub
+		Reservation reservation=
+				reservationRepository.checkReservationExists(userId, appointmentId);
+		if(reservation ==null)
+			return false;
+		return true;
+					
 	}
 
+	@Override
+	public List<ReservationDto> getReservationsByAppointment(long appointmentId) {
+		// TODO Auto-generated method stub
+		return convertEntityListToResponseList(appointmentDao.
+				findById(appointmentId).get().getReservations().stream()
+				.collect(Collectors.toList()));
+	}
+	
+	
+//	@Override
+//	public void test() {
+//		Role role = roleRepository.getOne(1L);
+//		System.out.println(role);
+//		User user = new User("karim", "slaah", "male", "teez", role, "5165161");
+//		user.setUserName("a7a");
+//		userDao.save(user);
+//	}
+	
 }

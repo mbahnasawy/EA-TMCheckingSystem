@@ -26,8 +26,8 @@ public class User {
 	private String lastName;
 	private String gender;
 	@Email
-	@Column(nullable = false)
 	@NotNull
+	@Column(nullable = false,unique = true)
 	private String email;
 	@NotNull
 	@Column(unique = true)
@@ -38,14 +38,15 @@ public class User {
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Role> roles = new HashSet<>();
 
-	public User(String firstName, String lastName, String gender, @Email String email, Role role,String password,String userName) {
+	public User(String firstName, String lastName, String gender, @Email String email, Set<Role> lstRole,String password,String userName) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
 		this.email = email;
 		this.password = password;
 		this.userName = userName;
-		this.roles.addAll(roles);
+		roles =new HashSet<>();
+		this.roles.addAll(lstRole);
 	}
 
 	public User() {
@@ -99,13 +100,6 @@ public class User {
 		roles.add(role);
 	}
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
 
 	public String getPassword() {
 		return password;
@@ -115,11 +109,12 @@ public class User {
 		this.password = password;
 	}
 
-	public Set<Role> getRoles() {
-		return roles;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
+	
 }

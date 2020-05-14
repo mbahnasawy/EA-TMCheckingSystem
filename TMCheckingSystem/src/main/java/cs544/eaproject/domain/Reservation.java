@@ -24,7 +24,7 @@ public class Reservation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	//@Enumerated(EnumType.STRING)
+	@Enumerated(EnumType.STRING)
 	private ReservationStatus status;
 
 	// person requesting the reservation
@@ -79,6 +79,12 @@ public class Reservation {
 
 	public long getId() {
 		return id;
+	}
+
+	@Override
+	public String toString() {
+		return "Reservation [id=" + id + ", status=" + status + ", dateTime=" + dateTime + ", consumer=" + consumer
+				+ ", appointment=" + appointment + "]";
 	}
 	
 	
