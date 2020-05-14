@@ -1,65 +1,82 @@
 package cs544.eaproject;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
+import java.io.UnsupportedEncodingException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import cs544.eaproject.controller.AppointmentController;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
+import com.mysql.cj.util.TestUtils;
+
+import cs544.eaproject.config.SpringSecurityWebAuxTestConfig;
 import cs544.eaproject.domain.Appointment;
-import cs544.eaproject.repository.AppointmentRepository;
-import cs544.eaproject.util.Response;
+import cs544.eaproject.service.AppointmentService;
+import cs544.eaproject.service.dto.AppointmentDto;
 
-@SpringBootTest
-//@RunWith(SpringRunner.class)
+@SpringBootTest(classes = SpringSecurityWebAuxTestConfig.class)
+@AutoConfigureMockMvc
+@RunWith(SpringJUnit4ClassRunner.class)
 public final class AppointmentCreateTest {
 
 	@Autowired
-	private AppointmentRepository appointmentRepository;
+	private MockMvc mockMvc;
 
-	@Autowired
-	private AppointmentController appointmentController;
+	protected ResultActions login() throws Exception {
+		Object randomObj = new Object() {
+			public final String username = "admin";
+			public final String password = "123";
+		};
 
-	@Test
-	void contextLoads() {
-		String pattern = "yyyy-MM-dd";
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		ObjectMapper objectMapper = new ObjectMapper();
+		String json = objectMapper.writeValueAsString(randomObj);
+		return (ResultActions) this.mockMvc
+				.perform(post("/user/authenticate").contentType(MediaType.APPLICATION_JSON).content(json));
+	}
 
-		Appointment appointment = null;
-		try {
-			appointment = new Appointment(simpleDateFormat.parse("2028-09-09"), "classroom", null);
-			Response response = appointmentController.createAppointment(appointment);
-			Appointment result = appointmentRepository.getOne(((Appointment) response.getResult()).getId());
-			assertThat(appointment).isEqualTo(result);
-
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			appointmentRepository.delete(appointment);
-		}
-
+	protected String extractToken(MvcResult result) throws UnsupportedEncodingException {
+		return JsonPath.read(result.getResponse().getContentAsString(), "$.token");
 	}
 
 	@Test
-	void test2() {
-		String pattern = "yyyy-MM-dd";
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-
-		Appointment appointment = null;
+	void createAppointmentTest() {
 		try {
-			appointment = new Appointment(simpleDateFormat.parse("2038-01-01"), "office", null);
-			Response response = appointmentController.createAppointment(appointment);
-			Appointment result = appointmentRepository.getOne(((Appointment) response.getResult()).getId());
-			assertThat(appointment).isEqualTo(result);
 
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			final String token = extractToken(login().andReturn());
+
+			JSONObject json = new JSONObject();
+			String jsonStr = "";
+
+			json.put("location", "TEST LOCATION 2");
+			json.put("dateTime", "2029-11-11 10:00:00");
+			jsonStr = json.toString();
+
+			MvcResult result = this.mockMvc
+					.perform(post("/appointments").contentType(MediaType.APPLICATION_JSON).content(jsonStr)
+							.accept(MediaType.APPLICATION_JSON).header("Authorization", "Bearer " + token))
+					.andExpect(status().isOk()).andReturn();
+
+			Integer id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+
+			this.mockMvc.perform(MockMvcRequestBuilders.delete("/appointments/{id}", id).header("Authorization",
+					"Bearer " + token)).andExpect(status().isOk());
+
+		} catch (Exception e) {
+//			assertThat("1").isEqualTo("0");
 			e.printStackTrace();
-			appointmentRepository.delete(appointment);
 		}
 	}
 }

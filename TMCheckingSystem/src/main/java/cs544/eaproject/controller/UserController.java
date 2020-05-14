@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cs544.eaproject.integration.Jwt;
 import cs544.eaproject.service.UserService;
-import cs544.eaproject.service.request.AuthRequest;
-import cs544.eaproject.service.response.AuthResponse;
+import cs544.eaproject.service.dto.AuthRequest;
+import cs544.eaproject.service.dto.AuthResponse;
 
 @RestController
 @RequestMapping("/user")
@@ -32,11 +32,11 @@ public class UserController {
 	public ResponseEntity<?> generateToken(@RequestBody AuthRequest authRequest) throws Exception {
 		try {
 			authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
+					new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 		} catch (Exception ex) {
 			throw new Exception("inavalid email/password");
 		}
-		final UserDetails user = userService.loadUserByUsername(authRequest.getEmail());
+		final UserDetails user = userService.loadUserByUsername(authRequest.getUsername());
 		String token = jwt.generateToken(user.getUsername());
 		return ResponseEntity.ok(new AuthResponse(token, "Login success",HttpStatus.OK.value()));
 	}
