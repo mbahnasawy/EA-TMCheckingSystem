@@ -15,7 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import cs544.eaproject.dao.AppointmentDAO;
 import cs544.eaproject.domain.Appointment;
 import cs544.eaproject.domain.Reservation;
 import cs544.eaproject.domain.ReservationStatus;
